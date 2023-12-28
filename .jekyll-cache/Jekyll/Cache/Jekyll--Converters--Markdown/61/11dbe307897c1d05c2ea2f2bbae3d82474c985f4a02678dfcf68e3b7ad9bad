@@ -1,0 +1,18 @@
+I"�<p>Until recently, my girlfriend produced podcasts for the New Republic. In addition to her work on <a href="https://newrepublic.com/authors/primary-concerns">Primary Concerns</a> and <a href="https://newrepublic.com/tags/intersection">Intersection</a>, she also helped manage TNR’s social media presence.<br />
+<br />
+A large part of her social media work was watching TNR’s <a href="http://newrepublic.com/minutes">minutes</a> site for new content. For each new minute, she would copy the headline, grab the associated image, and add them to <a href="https://buffer.com/">Buffer</a>, the app TNR uses to schedule its tweets. This isn’t the most thrilling work, and can be downright annoying when trying to edit a podcast on a deadline.<br />
+<br />
+To help automate this process, I wrote some code to:</p>
+
+<ul>
+  <li>Scrape the TNR Minutes page once per minute</li>
+  <li>Compare this data to previous posts saved in a local SQLite database</li>
+  <li>Identify new posts based on the unique minute ID</li>
+  <li>If a new post was found, compose a tweet with the headline and image</li>
+  <li>Post the tweet to Buffer, and send her a Slack message of the tweet</li>
+</ul>
+
+<p>Not the most captivating of projects (where are the maps??), but cool to build something that makes my girlfriend’s life easier. We also integrated a <a href="https://docs.google.com/spreadsheets/d/1t0wCIi_ZV4mHFyGyQs3DqidCSUZD4pifj74IedKMVr0/edit#gid=0">Google Sheet</a> to pass environment variables to the app. Using the Google Doc, she could turn the system on/off and edit the time delay for the tweets.<br />
+<br />
+I love building projects that meet the user where they’re at– writing custom code to integrate with their end product while communicating to them through familiar systems like Slack and Google Sheets. If you’re interested, the code is <a href="https://github.com/mappingvermont/tnrminutes">here</a> on GitHub.</p>
+:ET

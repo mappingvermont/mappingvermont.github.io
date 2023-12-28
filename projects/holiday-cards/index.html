@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <head>
+        <title>Holiday Cards, 2013 - 2015</title>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+        <!-- Mobile meta tags-->
+        <meta name="HandheldFriendly" content="True">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta name="MobileOptimized" content="320" />
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta http-equiv="cleartype" content="on">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
+        <script src="./MovingMarker.js"></script>
+        <script src="addresses.json"></script>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.min.css" />
+        <link rel="stylesheet" href="style.css" />
+
+    </head>
+
+    <body>
+
+        <div id="sidebar">
+            <div class="sidebar_header">
+                <h3>Holiday Cards, 2013 - 2015</h3>
+            </div>
+            <div class="sidebar_content">
+                Since 2013, I've been using a <a href="https://docs.google.com/spreadsheets/d/1QwGgfbiVvu3of4cnOq5Nkrq9L-ScUKVrupSGNBAWRcc/edit?usp=sharing" target="_blank">Google Spreadsheet</a> to keep track of the holiday cards I send. When adding my list for this year, I realized that this could be a pretty cool data source-- a way to show how my friends have moved around the country in recent years. 
+                <br>
+                <br>
+                Use the slider bar below to change the year:
+                <br>
+                <br>
+
+                <div id="slider">
+                    <label for="rangeVal">Year:
+                        <em id="rangeValLabel" style="font-style: normal;">2013</em>
+                    </label>
+                    <input type="range" value="2013" min="2013" max="2015" step="1" oninput="sliderControl(this.value);document.getElementById('rangeValLabel').innerHTML = this.value;" style="width: 85%">
+
+                </div>
+                <br>
+                <div id="pause" style="text-align: center;">
+                    <button type="button" style="width: 50%;" onClick="pauseButton()">Pause</button>
+                </div>
+                <br> Built by <a href="http://www.mappingvermont.org" target="blank">MappingVermont</a>. H/T to the awesome <a href="https://github.com/ewoken/Leaflet.MovingMarker" target="_blank">Leaflet Moving Marker</a> plugin. 
+            </div>
+        </div>
+
+        <div class="toggle_description btn" type="button">
+            About this map
+        </div>
+
+        <div class="description_box">
+            <div class="x_button toggle_description btn btn-primary" type="button">
+                <strong>X</strong>
+            </div>
+            <div class="description_box_header"></div>
+            <div class="description_box_content">
+                <div class="description_box_text"></div>
+                <div id="caption_box"></div>
+            </div>
+        </div>
+        <div class="description_box_cover"></div>
+
+        <div id="map"></div>
+
+        <script src="script.js"></script>
+        <script>
+        </script>
+    </body>
+
+</html>

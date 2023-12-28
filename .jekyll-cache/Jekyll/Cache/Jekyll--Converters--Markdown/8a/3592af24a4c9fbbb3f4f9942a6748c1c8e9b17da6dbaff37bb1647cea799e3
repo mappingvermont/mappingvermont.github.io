@@ -1,0 +1,22 @@
+I"�
+<p>My first website for DJing was <a href="http:\\twoyoutubevideosandamotherfuckingcrossfader.com">twoyoutubevideosandamotherfuckingcrossfader.com</a>. It’s pretty standard, and for a long time it did what it promised: allowed users to play youtube videos, crossfading one into another for a basic DJ-like feel. When it stopped working recently, <a href="https://twitter.com/stapletweets">Nico Staple</a> set out to build his own. One weekend later, he’d produced this:<br />
+<br />
+<a href="http://xfade.audio">xfade.audio</a><br />
+<br />
+It’s got everything: search for videos, create playlists and fade one track into another, all within a sleek interface. My nascent JavaScript skills aren’t ready for primetime just yet, but I did want to contribute in some way. One of my favorite features of mapping sites is the ease of sharing map views. As you pan the map and toggle layers, the URL updates– storing your coordinates and configuration for the layers you have turned on.<br />
+<br />
+We set out to build something similar for Crossfade. Instead of encoding all the parameters in the URL, we wanted a compact hash: something like <a href="http://xfade.audio/#ELe36rd6">xfade.audio/#ELe36rd6</a> that could be used to lookup a JSON config in a database. I’ve worked a fair amount with Flask, and used <a href="https://realpython.com/blog/python/flask-by-example-part-3-text-processing-with-requests-beautifulsoup-nltk/">this great tutorial</a> to get me started. The final workflow looks like this:</p>
+
+<ul>
+  <li>User adds/deletes a video from the queue on <a href="www.xfade.audio">xfade.audio</a></li>
+  <li>Site sends a <code class="language-plaintext highlighter-rouge">POST</code> request to <code class="language-plaintext highlighter-rouge">crossfade-api.mappingvermont.org/collection/new</code> containing the config for current videos displayed</li>
+  <li>Flask API receives the request, adds the POSTed JSON to postgres</li>
+  <li>API responds with the hash-encoded unique ID from the database table</li>
+</ul>
+
+<p>Later, when someone shares the link, a GET request to <a href="http://crossfade-api.mappingvermont.org/collection/ELe36rd6">crossfade-api.mappingvermont.org/collection/ELe36rd6</a> can retrieve the previous configuration.<br />
+<br />
+Check out the <a href="http://xfade.audio">final product</a>. Nico and I were pleasantly surprised by the speed of the response. When this app goes viral, of course, we’ll have to rebuild the code, maybe even bringing front-end and back-end code under the same roof. Until then, it was cool to hack on an API that contributes to a beautiful website. Final code is here:<br />
+<br />
+<a href="http://github.com/mappingvermont/crossfade-api">http://github.com/mappingvermont/crossfade-api</a>.</p>
+:ET

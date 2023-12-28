@@ -1,0 +1,98 @@
+I"?<p>It’s been about four years since I’ve written here, and a lot has changed. My wife and I were married in July 2019, and we welcomed our daughter in April 2021. What a whirlwind! We like to keep the focus on mapping and Vermont here at this site, but I do feel very lucky and proud of our little family ❤️<br />
+<br />
+We’ve also just moved back to the state (July 2021) and I’ve got a million blog post ideas. I’ll start with a straightforward one- who’s the most famous Vermonter ever? Ethan Allen? Bernie Sanders? Calvin Coolidge? John Deere? John LeClair?<br />
+<br />
+And how do you define famous? And the classic question- how do you decide who is a <em>Vermonter</em>? I’m going to rely on wikipedia to enforce both of these standards. It’s a little dubious, but we need some help:</p>
+
+<ul>
+  <li>‘Famous’ will be defined using <a href="https://github.com/brawer/wikidata-qrank">qrank</a>, a ranking system using wikipedia pageviews</li>
+  <li>‘Vermonter’ as defined by the <a href="https://en.wikipedia.org/wiki/List_of_people_from_Vermont">List of people from Vermont</a> wikipedia article</li>
+</ul>
+
+<h2 id="pulling-the-data">Pulling the data</h2>
+
+<p>I used the incredible npm <a href="https://github.com/spencermountain/wtf_wikipedia">wtf_wikipedia</a> package to pull down the Famous Vermonters data. The package made it really easy to pull in this data- letting me poke at it in a node REPL until I had it working correctly. To match each famous vermonter to their respective <code class="language-plaintext highlighter-rouge">qrank</code>, I then queried the wikipedia API to get their wikidata ID, then wrote the output to a CSV. As a node n00b it probably took me three full hours to get the async stuff right. I tried it all- requests, promises, request-promises, you name it.<br />
+<br />
+Here’s <a href="https://gist.github.com/mappingvermont/e744eca4308d2bd8b20e032054dc7ea6">the code</a> to build a CSV of Famous Vermonter and their wikidata IDs in case you want to follow along at home.</p>
+
+<h2 id="importing-it-into-sql">Importing it into SQL</h2>
+
+<p>And to import the Famous Vermonters CSV into postgres:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">create</span> <span class="k">table</span> <span class="n">vermonters</span> <span class="p">(</span><span class="n">qid</span> <span class="nb">text</span><span class="p">,</span> <span class="n">name</span> <span class="nb">text</span><span class="p">);</span>
+<span class="err">\</span><span class="k">COPY</span> <span class="n">vermonters</span><span class="p">(</span><span class="n">qid</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">from</span> <span class="s1">'famous_vermonters.csv'</span> <span class="k">DELIMITER</span> <span class="s1">','</span> <span class="n">CSV</span> <span class="n">HEADER</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>I did some similar with the qrank dataset, but have misplaced that code. It’s a pretty straightforward CSV –&gt; postgres import.</p>
+
+<h2 id="database-queries">Database queries</h2>
+
+<p>OK, now we’ve got our famous vermonters CSV and the ranking for all wikidata entries . . . let’s join them 🎉</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">select</span> <span class="k">distinct</span> <span class="k">on</span> <span class="p">(</span><span class="n">qrank</span><span class="p">,</span> <span class="n">qid</span><span class="p">)</span> <span class="n">name</span><span class="p">,</span> <span class="n">qrank</span>
+<span class="k">from</span> <span class="n">vermonters</span> <span class="n">a</span><span class="p">,</span>
+  <span class="n">qrank</span> <span class="n">b</span>
+<span class="k">where</span> <span class="n">a</span><span class="p">.</span><span class="n">qid</span> <span class="o">=</span> <span class="n">b</span><span class="p">.</span><span class="n">entity</span>
+<span class="k">order</span> <span class="k">by</span> <span class="n">qrank</span> <span class="k">desc</span><span class="p">,</span> <span class="n">qid</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="and-the-winner-is----">And the winner is . . . 🥁🥁🥁</h2>
+
+<p>Now bear in mind that this is purely a ranking of how many times folks have clicked on this person’s wikipedia page. And this person didn’t even really grow up in Vermont. And . . . ok here are the final rankings:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>name</th>
+      <th>qrank</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ted Bundy (1946–1989), serial killer; born in Burlington</td>
+      <td>12098835</td>
+    </tr>
+    <tr>
+      <td>Bernie Sanders, politician, Vermont Senator since 2007</td>
+      <td>5997027</td>
+    </tr>
+    <tr>
+      <td>Calvin Coolidge, 30th President of the United States; born in Plymouth Notch</td>
+      <td>2338343</td>
+    </tr>
+    <tr>
+      <td>Rudyard Kipling, British author; resident of Brattleboro when he wrote The Jungle Book</td>
+      <td>2085495</td>
+    </tr>
+    <tr>
+      <td>Aleksandr Solzhenitsyn, Russian author, recipient, 1970 Nobel Prize for Literature</td>
+      <td>1908792</td>
+    </tr>
+    <tr>
+      <td>Randy Quaid, actor</td>
+      <td>1868975</td>
+    </tr>
+    <tr>
+      <td>Felicity Huffman, actress; attended school in Putney</td>
+      <td>1858119</td>
+    </tr>
+    <tr>
+      <td>Louise Glück, Pulitzer Prize-winning poet</td>
+      <td>1609669</td>
+    </tr>
+    <tr>
+      <td>Joseph Smith (1805–1844), founder of Latter Day Saint movement; born in Sharon</td>
+      <td>1577037</td>
+    </tr>
+    <tr>
+      <td>Joanna ‘JoJo’ Levesque, singer, actress; born in Brattleboro</td>
+      <td>1537455</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="whats-next">What’s next?</h2>
+
+<p>Wow - by wikipedia standards Ted Bundy is more than twice as famous as Bernie Sanders . . . eesh. I’m not sure how we can change this, other than visiting the wikipedia articles of our favorite lesser-known Vermonters to bump them up the list. I’ll make a plug here for <a href="https://en.wikipedia.org/wiki/Hetty_Green">Hetty Green</a>, <a href="https://en.wikipedia.org/wiki/Cyrus_Pringle">Cyrus Pringle</a> and of course <a href="https://en.wikipedia.org/wiki/Phineas_Gage">Phineas Gage</a>.</p>
+
+:ET

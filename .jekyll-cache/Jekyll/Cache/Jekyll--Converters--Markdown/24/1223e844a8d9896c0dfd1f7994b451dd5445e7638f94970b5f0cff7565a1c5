@@ -1,0 +1,8 @@
+I"<p>I’ve been sending holiday cards since college, and have been keeping formal track of my list since 2013. This year I decided to geocode my <a href="https://docs.google.com/spreadsheets/d/1QwGgfbiVvu3of4cnOq5Nkrq9L-ScUKVrupSGNBAWRcc/edit?usp=sheets_home">card list</a> to analyze where I’ve been sending my cards and where people have moved.<br />
+<br />
+I started with a <a href="https://github.com/mappingvermont/holidayCards/blob/master/inputAddresses.csv">CSV of all addresses</a>, then geocoded it using a <a href="https://github.com/mappingvermont/holidayCards/blob/master/buildJSON.py">python script</a>. I initially wrote the output to geoJSON, but ended up creating <a href="https://github.com/mappingvermont/holidayCards/blob/master/addresses.json">custom JSON</a> to better describe the relationships at play– humans that receive one card per year at a particular place. From here I brought it into Leaflet, and using the <a href="https://github.com/ewoken/Leaflet.MovingMarker">Leafet Moving Marker plugin</a>, animated people that have changed locations from year to year.<br />
+<br />
+The final code is up on <a href="https://github.com/mappingvermont/holidayCards">GitHub</a>. See the link below for the map:<br />
+<br />
+<a href="/projects/holiday-cards">Mapping Holiday Cards</a></p>
+:ET

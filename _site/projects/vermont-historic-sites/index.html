@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<head>
+	<title>Vermont's Historic Sites</title>
+	<meta charset="utf-8" />
+	<meta https-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+    <!-- Mobile meta tags-->
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta name="MobileOptimized" content="320"/>
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta https-equiv="cleartype" content="on">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" integrity="sha512-Zcn6bjR/8RZbLEpLIeOwNtzREBAJnUKESxces60Mpoj+2okopSAcSUIUOseddDm0cxnGQzxIR7vJgsLZbdLE3w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="style.css" />
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js" integrity="sha512-BwHfrr4c9kmRkLw6iXFdzcdWV/PGkVgiIyIWLLlTSXzWQzxuSg4DiQUCpauz/EWjgk5TYQqX/kvn9pG1NpYfqg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script type="text/javascript" src="leaflet.ajax.min.js"></script>	
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+	
+</head>
+<body>
+
+    <noscript>
+		<div id="noscript_note">
+			You must have JavaScript enabled to view this page.
+		</div>
+	</noscript>
+
+	<div id="sidebar">
+		<div class="sidebar_header">
+			<h3>Vermont's Historic Sites</h3>
+		</div>
+		<div class="sidebar_content">
+			 The State of Vermont has 212 historic markers in their <a href="https://historicsites.vermont.gov/roadside_markers/list" target="_blank">online database</a>, but less than half have recorded latitude and longitude. I used data from <a href="https://www.waymarking.com/cat/details.aspx?f=1&guid=9cd074cf-33c7-4e49-8c79-0cde5f9c39a6&st=2" target="_blank">Wayfaring.com</a>, the <a href="https://www.historicalmarkerproject.com" target="_blank">Historical Marker Project</a>, and Google Maps imagery to attempt to geolocate the entire set.
+			 <br><br>
+			 There are definitely some interesting patterns here-- five markers in Woodstock, none in Barre-- but I'll save that for future analysis.
+			 <br><br>
+			 Built by <a href="https://www.mappingvermont.org" target="blank">MappingVermont</a>. 
+		</div>
+	</div>
+
+	<div class="toggle_description btn" type="button">
+		About this map
+	</div>
+
+	<div class="description_box">
+		<div class="x_button toggle_description btn btn-primary" type="button">
+			<strong>X</strong>
+		</div>
+		<div class="description_box_header"></div>
+		<div class="description_box_content">
+			<div class="description_box_text"></div>
+			<div id="caption_box"></div>
+		</div>
+	</div>
+	<div class="description_box_cover"></div>
+	
+	<div id="map"></div>
+
+	<script src="script.js"></script>
+	<script>
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,1026 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+<title type="text">Mapping Vermont</title>
+<subtitle type="text">Mapping granges, post offices and barns-- everything 802</subtitle>
+<generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
+<link rel="self" type="application/atom+xml" href="http://localhost:4000/feed.xml" />
+<link rel="alternate" type="text/html" href="http://localhost:4000" />
+<updated>2023-12-28T16:10:57-05:00</updated>
+<id>http://localhost:4000/</id>
+<author>
+  <name>MappingVermont</name>
+  <uri>http://localhost:4000/</uri>
+  <email>charlie@mappingvermont.org</email>
+</author>
+
+
+<entry>
+  <title type="html"><![CDATA[Famous Vermonters]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/web/2021/11/27/famous-vermonters/" />
+  <id>http://localhost:4000/web/2021/11/27/famous-vermonters</id>
+  <published>2021-11-27T00:00:00-05:00</published>
+  <updated>2021-11-27T00:00:00-05:00</updated>
+  <author>
+    <name>MappingVermont</name>
+    <uri>http://localhost:4000</uri>
+    <email>charlie@mappingvermont.org</email>
+  </author>
+  <content type="html">It&apos;s been about four years since I&apos;ve written here, and a lot has changed. My wife and I were married in July 2019, and we welcomed our daughter in April 2021. What a whirlwind! We like to keep the focus on mapping and Vermont here at this site, but I do feel very lucky and proud of our little family ❤️\\
+\\
+We&apos;ve also just moved back to the state (July 2021) and I&apos;ve got a million blog post ideas. I&apos;ll start with a straightforward one- who&apos;s the most famous Vermonter ever? Ethan Allen? Bernie Sanders? Calvin Coolidge? John Deere? John LeClair?\\
+\\
+And how do you define famous? And the classic question- how do you decide who is a _Vermonter_? I&apos;m going to rely on wikipedia to enforce both of these standards. It&apos;s a little dubious, but we need some help:
+
+- &apos;Famous&apos; will be defined using [qrank](https://github.com/brawer/wikidata-qrank), a ranking system using wikipedia pageviews
+- &apos;Vermonter&apos; as defined by the [List of people from Vermont](https://en.wikipedia.org/wiki/List_of_people_from_Vermont) wikipedia article
+
+
+## Pulling the data
+
+I used the incredible npm [wtf_wikipedia](https://github.com/spencermountain/wtf_wikipedia) package to pull down the Famous Vermonters data. The package made it really easy to pull in this data- letting me poke at it in a node REPL until I had it working correctly. To match each famous vermonter to their respective `qrank`, I then queried the wikipedia API to get their wikidata ID, then wrote the output to a CSV. As a node n00b it probably took me three full hours to get the async stuff right. I tried it all- requests, promises, request-promises, you name it.\\
+\\
+Here&apos;s [the code](https://gist.github.com/mappingvermont/e744eca4308d2bd8b20e032054dc7ea6) to build a CSV of Famous Vermonter and their wikidata IDs in case you want to follow along at home.
+
+
+## Importing it into SQL
+
+And to import the Famous Vermonters CSV into postgres:
+
+```sql
+create table vermonters (qid text, name text);
+\COPY vermonters(qid, name) from &apos;famous_vermonters.csv&apos; DELIMITER &apos;,&apos; CSV HEADER;
+```
+
+I did some similar with the qrank dataset, but have misplaced that code. It&apos;s a pretty straightforward CSV --&gt; postgres import.
+
+
+## Database queries
+
+OK, now we&apos;ve got our famous vermonters CSV and the ranking for all wikidata entries . . . let&apos;s join them 🎉
+
+```sql
+select distinct on (qrank, qid) name, qrank
+from vermonters a,
+  qrank b
+where a.qid = b.entity
+order by qrank desc, qid;
+```
+
+## And the winner is . . . 🥁🥁🥁
+
+Now bear in mind that this is purely a ranking of how many times folks have clicked on this person&apos;s wikipedia page. And this person didn&apos;t even really grow up in Vermont. And . . . ok here are the final rankings:
+
+
+| name | qrank|
+|---|-----|
+| Ted Bundy (1946–1989), serial killer; born in Burlington | 12098835|
+| Bernie Sanders, politician, Vermont Senator since 2007 |  5997027|
+| Calvin Coolidge, 30th President of the United States; born in Plymouth Notch |  2338343|
+| Rudyard Kipling, British author; resident of Brattleboro when he wrote The Jungle Book  |  2085495|
+| Aleksandr Solzhenitsyn, Russian author, recipient, 1970 Nobel Prize for Literature |  1908792|
+| Randy Quaid, actor |  1868975|
+| Felicity Huffman, actress; attended school in Putney |  1858119|
+| Louise Glück, Pulitzer Prize-winning poet |  1609669|
+| Joseph Smith (1805–1844), founder of Latter Day Saint movement; born in Sharon |  1577037|
+| Joanna &apos;JoJo&apos; Levesque, singer, actress; born in Brattleboro   |  1537455|
+
+## What&apos;s next?
+
+Wow - by wikipedia standards Ted Bundy is more than twice as famous as Bernie Sanders . . . eesh. I&apos;m not sure how we can change this, other than visiting the wikipedia articles of our favorite lesser-known Vermonters to bump them up the list. I&apos;ll make a plug here for [Hetty Green](https://en.wikipedia.org/wiki/Hetty_Green), [Cyrus Pringle](https://en.wikipedia.org/wiki/Cyrus_Pringle) and of course [Phineas Gage](https://en.wikipedia.org/wiki/Phineas_Gage).
+
+
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/web/2021/11/27/famous-vermonters/&quot;&gt;Famous Vermonters&lt;/a&gt; was originally published by MappingVermont at &lt;a href=&quot;http://localhost:4000&quot;&gt;Mapping Vermont&lt;/a&gt; on November 27, 2021.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[Vermont Town Tracker]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/web/2017/10/09/vermont-town-tracker/" />
+  <id>http://localhost:4000/web/2017/10/09/vermont-town-tracker</id>
+  <published>2017-10-09T00:00:00-04:00</published>
+  <updated>2017-10-09T00:00:00-04:00</updated>
+  <author>
+    <name>MappingVermont</name>
+    <uri>http://localhost:4000</uri>
+    <email>charlie@mappingvermont.org</email>
+  </author>
+  <content type="html">When I first started this website in 2013, one of my goals was to track my progress in the 251 Club. I had it all planned out-- I&apos;d
+keep track of my progress in a Google spreadsheet and join the data dynamically to a Leaflet map for visualization. After I got this up and
+running, I could add different tabs for friends who wanted to map their towns. Not at all intuitive or scalable, but totally fun!
+\\
+\\
+In the years since, I&apos;ve set my web development sights a little bit higher. Why not make this an actual &quot;production&quot; website, where
+users could have a profile and edit their progress on an actual map? I had some experience with Leaflet, and had been wanting to try out
+the MEAN stack for development. I found a [great tutorial](https://github.com/sitepoint-editors/MEAN-stack-authentication) on MEAN
+user management and was off to the races.
+\\
+\\
+The rest, as they say is history. If you&apos;re interested, please create a profile here and start tracking your progress:
+\\
+\\
+[www.mappingvermont.org/projects/vt-town-tracker/](/projects/vt-town-tracker/)
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/web/2017/10/09/vermont-town-tracker/&quot;&gt;Vermont Town Tracker&lt;/a&gt; was originally published by MappingVermont at &lt;a href=&quot;http://localhost:4000&quot;&gt;Mapping Vermont&lt;/a&gt; on October 09, 2017.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[A Sanborn Map For Every New Tab]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/web/2017/08/13/sanborn-chrome-extension/" />
+  <id>http://localhost:4000/web/2017/08/13/sanborn-chrome-extension</id>
+  <published>2017-08-13T00:00:00-04:00</published>
+  <updated>2017-08-13T00:00:00-04:00</updated>
+  <author>
+    <name>MappingVermont</name>
+    <uri>http://localhost:4000</uri>
+    <email>charlie@mappingvermont.org</email>
+  </author>
+  <content type="html">I&apos;ve spent an inordinate amount of time stitching Sanborn maps into town-wide tifs,
+georeferencing them, and then creating map tiles to view on the web. The results often
+vary depending on DPI of the scanned maps, the software I use to stitch,
+and the quality of my georeferencing, but it&apos;s always fun to
+to try and understand the geography of these early settlements.
+\\
+\\
+This process also allows one to pan and zoom over the map, which often leads
+to interesting discoveries outside the larger dominant industries-- a
+fish market in a small corner store, or the city stable for the fire department&apos;s horses.
+Here are a few of my favorite examples:
+\\
+\\
+![Swanton Suspenders]({{ site.url }}/images/swanton-suspenders.jpg)
+\\
+The Swanton Suspender company, 1882
+\\
+\\
+![Kow-Kure]({{ site.url }}/images/kow-kure.jpg)
+\\
+Kow-Kure, the predecessor to Bag Balm, in Lyndonville in 1900
+\\
+\\
+But how to browse all through all the available maps without taking the time to
+stitch and georeference each one? When my [Earth View new tab extension](https://chrome.google.com/webstore/detail/earth-view-from-google-ea/bhloflhklmhfpedakmangadcdofhnnoh?hl=en) broke a few weeks ago, I decided to create one of my own for Vermont Sanborn Maps.
+\\
+\\
+As always, the hard part was getting the data. The Library of Congress has a few different
+APIs for serving this data, so I wrote some python to code read the [source page](http://www.loc.gov/rr/geogmap/sanborn/states.php?stateID=52), then check each
+city for the years available, then download each sheet.
+\\
+\\
+I uploaded this images to an S3 bucket (s3://vermont-sanborn-maps), where
+they would be easily accessible. I found a few tutorials about creating chrome
+extensions, and with 50 lines of JavaScript and HTML, I put together a simple
+viewer to load a random Sanborn map every time a new tab is opened.
+\\
+\\
+All the code is on GitHub [here](https://github.com/mappingvermont/sanborn-chrome-extension), and the extension from the Chrome Store here:
+\\
+[https://chrome.google.com/webstore/detail/vermont-sanborn-maps-new/mdigfmpeaidjibmfjhadcnbioejfclji](https://chrome.google.com/webstore/detail/vermont-sanborn-maps-new/mdigfmpeaidjibmfjhadcnbioejfclji).
+\\
+\\
+Let me know if you find anything interesting!
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/web/2017/08/13/sanborn-chrome-extension/&quot;&gt;A Sanborn Map For Every New Tab&lt;/a&gt; was originally published by MappingVermont at &lt;a href=&quot;http://localhost:4000&quot;&gt;Mapping Vermont&lt;/a&gt; on August 13, 2017.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[The Secret of the Old Mill]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/web/2017/05/20/secret-of-the-old-mill/" />
+  <id>http://localhost:4000/web/2017/05/20/secret-of-the-old-mill</id>
+  <published>2017-05-20T00:00:00-04:00</published>
+  <updated>2017-05-20T00:00:00-04:00</updated>
+  <author>
+    <name>MappingVermont</name>
+    <uri>http://localhost:4000</uri>
+    <email>charlie@mappingvermont.org</email>
+  </author>
+  <content type="html">A few years ago my dad gave me a replica of the [1869 Beers map of Grafton](http://shop.old-maps.com/vermont/towns/windham-co-vt-1869-town/grafton-vermont-1869-old-town-map-reprint-windham-co/). I&apos;ve had it framed on my wall ever since. It&apos;s nice to see the familiar names of old Grafton (the Culvers, Fishers, Whitcombs, Wrights), many of whose descendants live there today.\\
+\\
+It&apos;s also nice to see Grafton near its demographic and industrial peak-- soapstone quarries in full production, saw mills on the Saxtons River and many school houses spread across town. There&apos;s also an inset of Cambridgeport:\\
+\\
+![Beers Cambrigeport 1869](/images/beers-cambridgeport-1869.jpg)
+*Image courtesy of [old-maps.com](http://old-maps.com)*\\
+\\
+I didn&apos;t pay very much attention to this at first, other than to pick out the familiar names of elementary school classmates (Aikens, Wymans). After all, not much has changed in these villages in the last 150 years.\\
+\\
+Looking at the map a little closer, however, I noticed that part of the Saxtons River had been diverted to power the mill at the corner of Route 121 and Cambridgeport Rd. I&apos;d always wondered how that mill generated power, given the small trickle of water that runs through it today. Of the hundreds of abandoned mills across the state, almost all have a healthy brook flowing through them. Looking at this map, it started to make sense.\\
+\\
+What didn&apos;t make sense, however, was the length of the race way to bring water to this mill. I georeferenced this map and measured-- it&apos;s almost 3/4 of a mile long. Why would someone build a mill if it required digging a long trench to bring it water? And is there any trace of this proto-canal visible today?\\
+\\
+Luckily, [VCGI](http://vcgi.vermont.gov) has a LiDAR image service perfect for this type of investigation. Dave Allen of [old-maps.com](http://old-maps.com) was happy to provide a high-res scan of the image, and I quickly got to work, georeferencing the historic map and comparing it to the image service. Here&apos;s a comparison of the historic map to today&apos;s LiDAR hillshade:\\
+\\
+[https://www.mappingvermont.org/projects/cambridgeport-mill-analysis/](/projects/cambridgeport-mill-analysis/)\\
+\\
+Looking at the LiDAR data, I can&apos;t find much evidence for the old race way. The usual stone walls are visible, but no sign of a trench that follows what appears on the map. This [spooky skull-like formation](/projects/cambridgeport-mill-analysis/#19/43.15299/-72.55950) was the closest I found to any irregularity. I&apos;d like to investigate this further, particularly the area where the canal begins near the saw mill. If I discover anything, you can find it here on MappingVermont!
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/web/2017/05/20/secret-of-the-old-mill/&quot;&gt;The Secret of the Old Mill&lt;/a&gt; was originally published by MappingVermont at &lt;a href=&quot;http://localhost:4000&quot;&gt;Mapping Vermont&lt;/a&gt; on May 20, 2017.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[Teaching a Dumbphone New Tricks]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/web/2017/03/26/teaching-a-dumbphone-new-tricks/" />
+  <id>http://localhost:4000/web/2017/03/26/teaching-a-dumbphone-new-tricks</id>
+  <published>2017-03-26T00:00:00-04:00</published>
+  <updated>2017-03-26T00:00:00-04:00</updated>
+  <author>
+    <name>MappingVermont</name>
+    <uri>http://localhost:4000</uri>
+    <email>charlie@mappingvermont.org</email>
+  </author>
+  <content type="html">I have a dumbphone. And it&apos;s great, except when I&apos;m lost. Most people open Google Maps on their phone, check out their location on the map, and course correct. I usually drive/hike/bike for another 15 minutes, then call one of my other dumbphone friends and ask them to look things up for me.
+\\
+\\
+I&apos;d been meaning to try [AWS Lambda](https://aws.amazon.com/lambda/) for some time, and this seemed like a good application. AWS Lambda provides serverless computing infrastructure-- you upload your code to the AWS servers, it waits for you to trigger it, and you only pay for it when it&apos;s in use. Plus it&apos;s totally scalable, so when this &quot;app&quot; takes over the dumbphone world, it should remain responsive.
+\\
+\\
+In theory it&apos;s pretty simple. The app needs to:
+
+- Get a text message with structured to/from/mode of transportation information
+- Pass this to the Google Directions API
+- Parse the response
+- Return turn-by-turn directions by SMS to the phone
+
+As part of my year-long effort to improve my JavaScript skills, I wrote this in Node JS instead of my usual python. It took a little longer, but soon enough I could communicate with the Google API and return directions in a formatted text string:
+
+{% highlight javascript %}
+stepArr = []
+
+var steps = response.json.routes[0].legs[0].steps
+for (i = 0; i &lt; steps.length; i++) {
+    var step = steps[i]
+    var instruction = step.html_instructions
+    var distance = step.distance.text
+
+    var msg = instruction + &apos; (&apos; + distance + &apos;)&apos;;
+    stepArr.push(msg)
+}
+
+return stepArr.join(&apos;, &apos;)
+{% endhighlight %}
+
+Now the hard part-- hooking this process up to SMS and AWS. The [few things I&apos;d read](http://www.perrygeo.com/running-python-with-compiled-code-on-aws-lambda.html) about deployment suggested it was possible, but involved lots of bundling virtualenvs, handlers, workers in very specific ways so they could be invoked by AWS. \\
+\\
+Luckily I found [this awesome tutorial](https://www.twilio.com/blog/2016/12/create-an-sms-bot-on-aws-lambda-with-claudia-js.html) from the SMS service Twilio, which made the process relatively painless. Per their recommendation I wrapped my code using the [Claudia Bot Builder](https://github.com/claudiajs/claudia-bot-builder) package, and it took care of the rest, providing an easy CLI interface to package my code and upload it to Lambda.\\
+\\
+The only hard part, per always, my poor understanding of the async nature of JavaScript. I ultimately included calls to OSM&apos;s nominatim geocoder as well, and waiting for responses to come back from that and Google Maps was tough. Once that process was sorted out, and all returned the Promise objects required by claudia.js, deploying was easy.\\
+\\
+I now have an SMS service that can text me directions when I&apos;m lost, am a little bit better at writing JavaScript, and am excited to build more AWS Lambda functions. For those of you with dumbphones, get in touch and I&apos;d be happy to share the phone number and input parameters for the service. For everyone else, check out the code on github to see how easy it is to write a Lambda function: [http://github.com/mappingvermont/navigator/](http://github.com/mappingvermont/navigator).
+
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/web/2017/03/26/teaching-a-dumbphone-new-tricks/&quot;&gt;Teaching a Dumbphone New Tricks&lt;/a&gt; was originally published by MappingVermont at &lt;a href=&quot;http://localhost:4000&quot;&gt;Mapping Vermont&lt;/a&gt; on March 26, 2017.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[Sanborn Redux]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/web/2017/01/28/sanborn-redux/" />
+  <id>http://localhost:4000/web/2017/01/28/sanborn-redux</id>
+  <published>2017-01-28T00:00:00-05:00</published>
+  <updated>2017-01-28T00:00:00-05:00</updated>
+  <author>
+    <name>MappingVermont</name>
+    <uri>http://localhost:4000</uri>
+    <email>charlie@mappingvermont.org</email>
+  </author>
+  <content type="html">The Library of Congress has posted scans of [new Vermont Sanborn maps](http://www.loc.gov/rr/geogmap/sanborn/states.php?stateID=52)! And that, of course, means I am duty-bound to stitch the various maps together, georeference them, and tile the results for the web. I&apos;ve done this for three towns I know fairly well-- Saxtons River, Bellows Falls, and Springfield.\\
+\\
+Unlike my previous work with the 1915 Sanborn map of Montpelier, these maps are much older-- made between 1894 and 1896. It makes for an interesting comparison. Where Montpelier has car garages, Bellows Falls has stables and outhouses. The older maps also cover much less area. Each were two sheets, whereas Montpelier was nineteen, and required much stitching and prep in Illustrator.\\
+\\
+In addition to expanding the geographic coverage of the maps, I&apos;ve improved the method of tile generation. I&apos;ve got a better sense now of the proper export resolution for the maps, and am using Mapnik directly to render the tiles. Both combine to make a much better output, most clearly seen in the handwriting at high zoom levels.\\
+\\
+I&apos;ve also built a little [Node application](http://www.github.com/mappingvermont/sanborn-vt) to create links to specific towns. The link [https://www.mappingvermont.org/projects/sanborn/saxtons-river](https://www.mappingvermont.org/projects/sanborn/saxtons-river) will redirect users to the zoom level and location appropriate for Saxtons River, using the wonderful [leaflet-hash](https://github.com/mlevans/leaflet-hash) library.\\
+\\
+Hopefully this will make it easier to share maps, and can also be used to link directly to interesting locations, like this &quot;Chine laundry&quot; in the basement of the old Oona&apos;s building in Bellows Falls: [https://www.mappingvermont.org/projects/sanborn/#21/43.13454/-72.44476](/projects/sanborn/#21/43.13454/-72.44476)\\
+\\
+Like my work with Montpelier, I&apos;m also looking for historic images for these maps. If you know of photos of Bellows Falls, Saxtons River or Springfield from the 1890s, please be in touch!
+
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/web/2017/01/28/sanborn-redux/&quot;&gt;Sanborn Redux&lt;/a&gt; was originally published by MappingVermont at &lt;a href=&quot;http://localhost:4000&quot;&gt;Mapping Vermont&lt;/a&gt; on January 28, 2017.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[Hills, Brooks, Ponds and Farms]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/web/2016/09/01/most-common-road-names/" />
+  <id>http://localhost:4000/web/2016/09/01/most-common-road-names</id>
+  <published>2016-09-01T00:00:00-04:00</published>
+  <updated>2016-09-01T00:00:00-04:00</updated>
+  <author>
+    <name>MappingVermont</name>
+    <uri>http://localhost:4000</uri>
+    <email>charlie@mappingvermont.org</email>
+  </author>
+  <content type="html">I love Vermont road names. They&apos;re often so direct-- there&apos;s usually a lime kiln on Lime Kiln Road, and the Goshen-Ripton Road will take you (depending on direction) to Goshen or Ripton. The usual statistic for road name analysis (if there is such a thing) is the most common road name in a state, i.e. &quot;75% of towns in Vermont have a Main St&quot;. That&apos;s an interesting stat, but I wanted to take it a step further.\\
+\\
+Instead of tallying statewide totals, I wanted to see what the most common road name word was in each town. I queried the E911 roads database to get a list of roads for each town, then split them up into their component words. States Prison Hollow Rd would become three words-- &apos;States&apos;, &apos;Prison&apos; and &apos;Hollow&apos;. I then counted the occurrence of each word by town.\\
+\\
+It&apos;s always interesting to use GIS data in an unconventional way. Instead of actually mapping the road segments, I&apos;m just using the DBF table as a database. The only geographically relevant information is that each road is associated with a town. It requires a little bit of grouping by road name and town to get individual combinations given the multiple segments each road has in GIS, but it&apos;s much easier than asking VTrans for an official list. The code is here on GitHub-- lots of python and sqlite: [https://github.com/mappingvermont/vt-road-names](https://github.com/mappingvermont/vt-road-names)\\
+\\
+After tallying these stats by town, I joined them to town boundaries and [mapped it](/projects/vt-road-names).\\
+\\
+Fun stuff! Such classic Vermont road names-- lots of Hill, Brook, Old, and Hollow. I love that nearly all the towns in the center of the state have Hill as their most common word, with the occasional Brook thrown in for good measure. There aren&apos;t as many hills in the Champlain Valley, of course, so the most common word varies -- some Bay, Shore, and Point suggest proximity to the lake.\\
+\\
+My favorite result is the concentration of &apos;Farm&apos; roads in South Burlington, Shelburne and Charlotte. Certainly these were all farming communities once, but something tells me that a lot of these names came after the farms had been converted into developments . . . at least if they&apos;re anything like [Brand Farm Dr](https://www.google.com/maps/place/Brand+Farm+Dr,+South+Burlington,+VT+05403/@44.4460825,-73.1713522,479m/data=!3m1!1e3!4m5!3m4!1s0x4cca7963ffa94299:0x714d17f30768a899!8m2!3d44.4460682!4d-73.1685519) in South Burlington anyway.
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/web/2016/09/01/most-common-road-names/&quot;&gt;Hills, Brooks, Ponds and Farms&lt;/a&gt; was originally published by MappingVermont at &lt;a href=&quot;http://localhost:4000&quot;&gt;Mapping Vermont&lt;/a&gt; on September 01, 2016.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[Standing up a Basic REST API using Flask]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/web/2016/08/22/basic-rest-api/" />
+  <id>http://localhost:4000/web/2016/08/22/basic-rest-api</id>
+  <published>2016-08-22T00:00:00-04:00</published>
+  <updated>2016-08-22T00:00:00-04:00</updated>
+  <author>
+    <name>MappingVermont</name>
+    <uri>http://localhost:4000</uri>
+    <email>charlie@mappingvermont.org</email>
+  </author>
+  <content type="html">My first website for DJing was [twoyoutubevideosandamotherfuckingcrossfader.com](http:\\twoyoutubevideosandamotherfuckingcrossfader.com). It&apos;s pretty standard, and for a long time it did what it promised: allowed users to play youtube videos, crossfading one into another for a basic DJ-like feel. When it stopped working recently, [Nico Staple](https://twitter.com/stapletweets) set out to build his own. One weekend later, he&apos;d produced this:\\
+\\
+[xfade.audio](http://xfade.audio)\\
+\\
+It&apos;s got everything: search for videos, create playlists and fade one track into another, all within a sleek interface. My nascent JavaScript skills aren&apos;t ready for primetime just yet, but I did want to contribute in some way. One of my favorite features of mapping sites is the ease of sharing map views. As you pan the map and toggle layers, the URL updates-- storing your coordinates and configuration for the layers you have turned on.\\
+\\
+We set out to build something similar for Crossfade. Instead of encoding all the parameters in the URL, we wanted a compact hash: something like [xfade.audio/#ELe36rd6](http://xfade.audio/#ELe36rd6) that could be used to lookup a JSON config in a database. I&apos;ve worked a fair amount with Flask, and used [this great tutorial](https://realpython.com/blog/python/flask-by-example-part-3-text-processing-with-requests-beautifulsoup-nltk/) to get me started. The final workflow looks like this:
+
+- User adds/deletes a video from the queue on [xfade.audio](www.xfade.audio)
+- Site sends a `POST` request to `crossfade-api.mappingvermont.org/collection/new` containing the config for current videos displayed
+- Flask API receives the request, adds the POSTed JSON to postgres
+- API responds with the hash-encoded unique ID from the database table
+
+Later, when someone shares the link, a GET request to [crossfade-api.mappingvermont.org/collection/ELe36rd6](http://crossfade-api.mappingvermont.org/collection/ELe36rd6) can retrieve the previous configuration.\\
+\\
+Check out the [final product](http://xfade.audio). Nico and I were pleasantly surprised by the speed of the response. When this app goes viral, of course, we&apos;ll have to rebuild the code, maybe even bringing front-end and back-end code under the same roof. Until then, it was cool to hack on an API that contributes to a beautiful website. Final code is here:\\
+\\
+[http://github.com/mappingvermont/crossfade-api](http://github.com/mappingvermont/crossfade-api).
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/web/2016/08/22/basic-rest-api/&quot;&gt;Standing up a Basic REST API using Flask&lt;/a&gt; was originally published by MappingVermont at &lt;a href=&quot;http://localhost:4000&quot;&gt;Mapping Vermont&lt;/a&gt; on August 22, 2016.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[Social Media and Python]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/web/2016/08/21/social-media-manager/" />
+  <id>http://localhost:4000/web/2016/08/21/social-media-manager</id>
+  <published>2016-08-21T00:00:00-04:00</published>
+  <updated>2016-08-21T00:00:00-04:00</updated>
+  <author>
+    <name>MappingVermont</name>
+    <uri>http://localhost:4000</uri>
+    <email>charlie@mappingvermont.org</email>
+  </author>
+  <content type="html">Until recently, my girlfriend produced podcasts for the New Republic. In addition to her work on [Primary Concerns](https://newrepublic.com/authors/primary-concerns) and [Intersection](https://newrepublic.com/tags/intersection), she also helped manage TNR&apos;s social media presence.\\
+\\
+A large part of her social media work was watching TNR&apos;s [minutes](http://newrepublic.com/minutes) site for new content. For each new minute, she would copy the headline, grab the associated image, and add them to [Buffer](https://buffer.com/), the app TNR uses to schedule its tweets. This isn&apos;t the most thrilling work, and can be downright annoying when trying to edit a podcast on a deadline.\\
+\\
+To help automate this process, I wrote some code to:
+
+- Scrape the TNR Minutes page once per minute
+- Compare this data to previous posts saved in a local SQLite database
+- Identify new posts based on the unique minute ID
+- If a new post was found, compose a tweet with the headline and image
+- Post the tweet to Buffer, and send her a Slack message of the tweet
+
+Not the most captivating of projects (where are the maps??), but cool to build something that makes my girlfriend&apos;s life easier. We also integrated a [Google Sheet](https://docs.google.com/spreadsheets/d/1t0wCIi_ZV4mHFyGyQs3DqidCSUZD4pifj74IedKMVr0/edit#gid=0) to pass environment variables to the app. Using the Google Doc, she could turn the system on/off and edit the time delay for the tweets.\\
+\\
+I love building projects that meet the user where they&apos;re at-- writing custom code to integrate with their end product while communicating to them through familiar systems like Slack and Google Sheets. If you&apos;re interested, the code is [here](https://github.com/mappingvermont/tnrminutes) on GitHub.
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/web/2016/08/21/social-media-manager/&quot;&gt;Social Media and Python&lt;/a&gt; was originally published by MappingVermont at &lt;a href=&quot;http://localhost:4000&quot;&gt;Mapping Vermont&lt;/a&gt; on August 21, 2016.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[DC Fire Stations]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/web/2016/08/07/dc-fire-stations/" />
+  <id>http://localhost:4000/web/2016/08/07/dc-fire-stations</id>
+  <published>2016-08-07T00:00:00-04:00</published>
+  <updated>2016-08-07T00:00:00-04:00</updated>
+  <author>
+    <name>MappingVermont</name>
+    <uri>http://localhost:4000</uri>
+    <email>charlie@mappingvermont.org</email>
+  </author>
+  <content type="html">I&apos;ve never thought of myself a fire station enthusiast. In Vermont, fire stations resemble many of the other buildings downtown: three story brick structures, dating to the late 1800s. Fire stations in DC are similar, but often the surrounding buildings have changed, leaving the fire stations alone to show what the city might have looked like one hundred years ago.\\
+\\
+In addition to their historical value, I was struck by the consistency in architectural form. Many appear to be built from the same blueprint-- two tall bays for the engines, rounded windows above each bay, and a flagpole protruding out into the street.\\
+\\
+While researching these structures I found [Mike Legeros&apos; DC Fire Station site](http://legeros.com/history/dc/). I was fully prepared to conduct my own inventory, walking around the city and photographing each building, only to find out that he&apos;s already done it. He&apos;s also included great notes on each station, like this for Company E5 on 3210 M St:
+{% highlight css %}
+Opened as Engine 7 on Jan. 23, 1885. Relocated to 347 K St. SW on Sep. 12, 1940.
+Opened as Engine 4 Sep. 12, 1940. Engine 4 relocated to 2531 Sherman Ave. NW
+on Oct. 22, 1976.
+{% endhighlight %}
+I&apos;ve mapped Mike&apos;s work, including photos and descriptions, [here](/projects/dc-fire-stations/)
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/web/2016/08/07/dc-fire-stations/&quot;&gt;DC Fire Stations&lt;/a&gt; was originally published by MappingVermont at &lt;a href=&quot;http://localhost:4000&quot;&gt;Mapping Vermont&lt;/a&gt; on August 07, 2016.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[All Star Infields]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/web/2016/07/12/all-star-infields/" />
+  <id>http://localhost:4000/web/2016/07/12/all-star-infields</id>
+  <published>2016-07-12T00:00:00-04:00</published>
+  <updated>2016-07-12T00:00:00-04:00</updated>
+  <author>
+    <name>MappingVermont</name>
+    <uri>http://localhost:4000</uri>
+    <email>charlie@mappingvermont.org</email>
+  </author>
+  <content type="html">The MLB All Star game is tonight, and the Cubs have accomplished something rare: they have starters at four of the five infield positions. Not only that, but they ring the diamond: \\
+\\
+1B: Anthony Rizzo\\
+2B: Ben Zobrist\\
+SS: Addison Russell\\
+3B: Kris Bryant\\
+\\
+What a team! I can&apos;t remember any team even coming close to this All Star royal flush. One of my friends claimed that the 1996 Yankees did the same, but only Wade Boggs started for them in the All Star game that year.\\
+\\
+How many times has this happened? I quickly got into a Wikipedia hole trying to find out-- and eventually started writing code to scrape the statistics for each year so that I could query them. But scraping Wikipedia is hard! The URLs are fairly regular, but their data is in [every](https://en.wikipedia.org/wiki/1933_Major_League_Baseball_All-Star_Game) [tabular](https://en.wikipedia.org/wiki/1944_Major_League_Baseball_All-Star_Game) [format](https://en.wikipedia.org/wiki/1951_Major_League_Baseball_All-Star_Game#Opening_Lineups) [imaginable](https://en.wikipedia.org/wiki/1996_Major_League_Baseball_All-Star_Game#Starting_lineups).\\
+\\
+After a few hours of this, I remembered [Sean Lahman&apos;s baseball database](http://www.seanlahman.com/baseball-archive/statistics/). Thank goodness! Within a few minutes, I was writing SQL queries against perfectly normalized data, loading the results into a nested dictionaries and tabulating the results. For those interested, the GitHub repo is [here](https://github.com/mappingvermont/all-star-infields).\\
+\\
+And now for the results! Three teams have matched the Cubs with four players elected to infield positions:
+
+### 1957 Cincinnati Redlegs
+C: Ed Bailey\\
+2B: Johnny Temple\\
+SS: Roy McMillan\\
+3B: Don Hoak
+
+### 1963 St. Louis Cardinals
+1B: Bill White\\
+2B: Julian Javier\\
+SS: Dick Groat\\
+3B: Ken Boyer
+
+### 1976 Cincinnati Reds
+C: Johnny Bench\\
+2B: Joe Morgan\\
+SS: Dave Concepcion\\
+3B: Pete Rose\\
+\\
+Pretty cool! And definitely a good reminder to seek out existing data sources. Scraping data can be fun, but I&apos;m happy to let other people sort out issues with missing data/complicated data. Stay tuned for maps of Vermont-born baseball players from this same dataset!
+
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/web/2016/07/12/all-star-infields/&quot;&gt;All Star Infields&lt;/a&gt; was originally published by MappingVermont at &lt;a href=&quot;http://localhost:4000&quot;&gt;Mapping Vermont&lt;/a&gt; on July 12, 2016.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[Mapping One Pixel at a Time]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/web/2016/07/02/leaflet-tiles-in-the-browser/" />
+  <id>http://localhost:4000/web/2016/07/02/leaflet-tiles-in-the-browser</id>
+  <published>2016-07-02T00:00:00-04:00</published>
+  <updated>2016-07-02T00:00:00-04:00</updated>
+  <author>
+    <name>MappingVermont</name>
+    <uri>http://localhost:4000</uri>
+    <email>charlie@mappingvermont.org</email>
+  </author>
+  <content type="html">Big news! I just started a new job working for [Global Forest Watch](http://globalforestwatch.org/map). I&apos;m thrilled to join the team here in DC, and excited to be part of their everything-but-the-kitchen-sink approach to mapping-- arcpy and GDAL for local data processing,  ArcGIS Server, TileMill and CartoDB for map services, and Leaflet and the ArcGIS JS API for web mapping.
+
+\\
+One of the things that got me interested in their work was how fast their raster data could be visualized and filtered by date. Here&apos;s [an example](http://www.globalforestwatch.org/map/9/-2.80/113.88/ALL/grayscale/umd_as_it_happens?tab=analysis-tab&amp;begin=2015-01-01&amp;end=2016-06-09) of GLAD alert data (30 x 30m pixels showing areas of likely deforestation). If I were building this site, I would use an esri image service to display this data. When a user hit the play button, the site would make an export map request to the service with start/end date parameters for the map of deforestation. This request would succeed, but it wouldn&apos;t be fast enough to keep up with the time slider presented in the website, which would need to make a new request multiple times per second.
+
+\\
+How does it work, then? Instead of making multiple calls to a service, the site loads map tiles for each area once. These tiles use specific RGB values as a way to encode date information. Each color is represented in RGB color space, with values of 1 - 255 for Red, Green, and Blue. The website reads these colors, then applies a function to translate the color to a date value they represent. 
+
+\\
+For this deforestation service, the date can be decoded by multiplying the the red band value by 255, then adding the green band value to it. This gives the total number of days after January 1, 2015. Deforestation that occurred on 1/10/2015, for example, would be Red: 0, Blue: 10, or (255 * 0) + (10). This date information is decoded client side, and the browser turns all the pixels that are within the date range selected pink. If a pixel doesn&apos;t match the date range shown, the browser will turn the pixel transparent.
+
+\\
+I think what I like most about this approach is how it comes down to basic computer science. All we&apos;re really doing here is manipulating an image. We don&apos;t need a fancy server to turn on/off different colors, we just need to read all the pixels of an image, apply a function to the values, then change their colors. Computers are really good at this, and web browsers in particular. All the work is pushed to the client side, the server just has to provide a static map tile.
+
+\\
+To better understand how to access the pixel values of map tiles in the browser, I found a [great example](https://johngravois.com/lerc-leaflet) from John Gravois. I repurposed it to read imagery tiles from an ArcGIS Image Server [here](http://rawgit.com/mappingvermont/32e9b947fc7bf60c91cecd460fc7b0bf/raw/0519e45e4783c1c50735452886013cb2ba695c77/leaflet_canvas.html). Now that we have a handle on each pixel being read to the map, we can alter the image data. Based on this [Mozilla image tutorial](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Pixel_manipulation_with_canvas), we can modify the RGB value displayed using the following code:
+
+{% highlight javascript %}
+  var invert = function() {
+    for (var i = 0; i &lt; data.length; i += 4) {
+      data[i]     = 255 - data[i];     // red
+      data[i + 1] = 255 - data[i + 1]; // green
+      data[i + 2] = 255 - data[i + 2]; // blue
+    }
+    ctx.putImageData(imageData, 0, 0);
+  };
+{% endhighlight %}
+
+I&apos;ve used this function to [invert every pixel in that same ArcGIS Image Service and display it](http://rawgit.com/mappingvermont/c7056e7cd0f68af6f75c98d493ead337/raw/440f4d430fb0e5898f86736b2ad8d99ac8b2fcff/leaflet_canvas_invert.html). Pretty cool, huh? I like how surreal it looks-- the street trees of Toronto all turned white. It&apos;s amazing how fast it draws too. We&apos;re literally changing every pixel of a satellite image in the browser, and it performs just like a normal image service. More next time on using this approach to solve an actual mapping problem!
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/web/2016/07/02/leaflet-tiles-in-the-browser/&quot;&gt;Mapping One Pixel at a Time&lt;/a&gt; was originally published by MappingVermont at &lt;a href=&quot;http://localhost:4000&quot;&gt;Mapping Vermont&lt;/a&gt; on July 02, 2016.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[Hockey Hometowns]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/general/2016/03/13/hockey-hometowns/" />
+  <id>http://localhost:4000/general/2016/03/13/hockey-hometowns</id>
+  <updated>2016-03-13T00:00:00-00:00</updated>
+  <published>2016-03-13T00:00:00-05:00</published>
+  
+  <author>
+    <name>MappingVermont</name>
+    <uri>http://localhost:4000</uri>
+    <email>charlie@mappingvermont.org</email>
+  </author>
+  <content type="html">I&apos;m not much of a hockey fan, but my buddy [Bob Fitch](https://bobsbreakdowns.wordpress.com/) showed me a great API that lists information for every player in the NHL (example: [Boston](http://nhlwc.cdnak.neulion.com/fs1/nhl/league/teamroster/bos/iphone/clubroster.json)). Included in this info is the player&apos;s vital stats, twitter handle, and, most importantly, their birthplace. If there&apos;s one thing better than an API, it&apos;s an API with really cool geographic data.\\
+\\
+Per always, I put together a [python script](https://github.com/mappingvermont/nhl-birthplaces/blob/master/geocodeBirthplace.py) to geocode these towns using Google&apos;s geocoder. I wrote the output to a bunch of [geoJSON files](https://github.com/mappingvermont/nhl-birthplaces/tree/master/outGeoJSON)- both team-specific and all players in the NHL. From here I put this data into in my standard mapping template, and added a filter to allow users to show/hide data by team.\\
+\\
+Here&apos;s the application: [https://www.mappingvermont.org/projects/nhl-birthplaces](/projects/nhl-birthplaces)\\
+\\
+Unfortunately there are no current NHL players from VT, but we do have the immortal [John LeClair](https://en.wikipedia.org/wiki/John_LeClair) to our credit. Next up, we&apos;ll look through [Sean Lahman&apos;s baseball database](http://www.seanlahman.com/baseball-archive/statistics/) for evidence of Vermont athletic prowess.
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/general/2016/03/13/hockey-hometowns/&quot;&gt;Hockey Hometowns&lt;/a&gt; was originally published by MappingVermont at &lt;a href=&quot;http://localhost:4000&quot;&gt;Mapping Vermont&lt;/a&gt; on March 13, 2016.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[Mapping Holiday Cards]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/general/2016/01/24/mapping-holiday-cards/" />
+  <id>http://localhost:4000/general/2016/01/24/mapping-holiday-cards</id>
+  <published>2016-01-24T00:00:00-05:00</published>
+  <updated>2016-01-24T00:00:00-05:00</updated>
+  <author>
+    <name>MappingVermont</name>
+    <uri>http://localhost:4000</uri>
+    <email>charlie@mappingvermont.org</email>
+  </author>
+  <content type="html">I&apos;ve been sending holiday cards since college, and have been keeping formal track of my list since 2013. This year I decided to geocode my [card list](https://docs.google.com/spreadsheets/d/1QwGgfbiVvu3of4cnOq5Nkrq9L-ScUKVrupSGNBAWRcc/edit?usp=sheets_home) to analyze where I&apos;ve been sending my cards and where people have moved.\\
+\\
+I started with a [CSV of all addresses](https://github.com/mappingvermont/holidayCards/blob/master/inputAddresses.csv), then geocoded it using a [python script](https://github.com/mappingvermont/holidayCards/blob/master/buildJSON.py). I initially wrote the output to geoJSON, but ended up creating [custom JSON](https://github.com/mappingvermont/holidayCards/blob/master/addresses.json) to better describe the relationships at play-- humans that receive one card per year at a particular place. From here I brought it into Leaflet, and using the [Leafet Moving Marker plugin](https://github.com/ewoken/Leaflet.MovingMarker), animated people that have changed locations from year to year.\\
+\\
+The final code is up on [GitHub](https://github.com/mappingvermont/holidayCards). See the link below for the map:\\
+\\
+[Mapping Holiday Cards](/projects/holiday-cards)
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/general/2016/01/24/mapping-holiday-cards/&quot;&gt;Mapping Holiday Cards&lt;/a&gt; was originally published by MappingVermont at &lt;a href=&quot;http://localhost:4000&quot;&gt;Mapping Vermont&lt;/a&gt; on January 24, 2016.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[Vermont's Historic Sites]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/general/2015/02/08/Vermonts-Historic-Sites/" />
+  <id>http://localhost:4000/general/2015/02/08/Vermonts-Historic-Sites</id>
+  <published>2015-02-08T00:00:00-05:00</published>
+  <updated>2015-02-08T00:00:00-05:00</updated>
+  <author>
+    <name>MappingVermont</name>
+    <uri>http://localhost:4000</uri>
+    <email>charlie@mappingvermont.org</email>
+  </author>
+  <content type="html">Whenever I see a historic marker in Vermont, I have to stop and look at it. You never know what might have happened in this very spot two hundred years ago-- a future president born, a revolutionary war battle, or a whole industrial apparatus alive in this now-empty meadow. In addition to formally recognizing such sites with that classic green plaque, the State has also posted a list of their locations (albeit in a hard to read/harder to download iframe table format) on their [website](http://historicsites.vermont.gov/roadside_markers/list).\\
+\\
+Seeing a list of locations in the state, my first instinct was to map it. Looking at the dataset further, however, I realized that less than half of the entries had an actual latitude and longitude. Most locations were fairly well described- &quot;intersection of Brook Rd and Thaddeus Stevens Rd&quot;- but some just called out nearby landmarks, i.e. &quot;near the village&quot;. With the help of auxilary sources such as [wayfaring.com](http://www.waymarking.com/cat/details.aspx?f=1&amp;guid=9cd074cf-33c7-4e49-8c79-0cde5f9c39a6&amp;st=2) and the [Historical Marker Project](http://www.historicalmarkerproject.com), as well as various town and city websites, I set out to georeference the remaining markers.\\
+\\
+This research is not what I&apos;d prefer to spend my free time on, but any project requires data cleanup, and some more than others. I was able to locate all but three historic markers. They are, in no particular order:
+- State Seal Pine Tree, North of Route 313 &amp; West of 7, Arlington
+- D.P. Thompson, Montpelier - Barre Rd, Montpelier
+- Levi P. Morton, Route 22A, north of village, Shoreham
+
+\\
+Mapping the remaining 200+ markers was an interesting exercise. From my time in Burlington, I&apos;ve definitely noticed a lot of markers there-- celebrating Ethan Allen, various Civil War regiments, and the creation of the pedestrian mecca that is Church St, among other things. Seeing them all on a map (fourteen in total) made me start to think about historical marker distribution. Investigation of other high-density historical marker areas (I&apos;m looking at you Woodstock and Dorset) only led to more questions. Questions like . . . why doesn&apos;t Barre have a single historic marker, and Woodstock has five?\\
+\\
+I suspect it might have a little something to with tourism, and with the motivated local governments that submit such historic prose to the State. Here&apos;s one of my favorite examples of a &apos;historic&apos; marker, this in the village of Belmont, but that could easily apply to any hamlet in the state:
+{% highlight css %}
+Mechanicsville was a village center in the Town of Mount Holly, which was chartered
+in 1792. The village prospered with the growth of water-powered manufacturing, that
+included sawmills, gristmills, wheelwrights, furniture shops, and the A.P. Chase
+Toy Factory. As manufacturing declined, Mechanicsville became popular with
+vacationers. The citizens petitioned to have the village name changed to Belmont to
+better fit the image of an idyllic summer retreat. The change was enacted on
+September 2nd, 1911.
+{% endhighlight%}
+\\
+See below for a link to the map of the state&apos;s historic markers. Feel free to comment if any locations are wrong, or if you discover any errors in the text.\\
+\\
+[Vermont&apos;s Historic Sites](/projects/vermont-historic-sites)
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/general/2015/02/08/Vermonts-Historic-Sites/&quot;&gt;Vermont's Historic Sites&lt;/a&gt; was originally published by MappingVermont at &lt;a href=&quot;http://localhost:4000&quot;&gt;Mapping Vermont&lt;/a&gt; on February 08, 2015.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[O Vermonters!]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/general/2015/01/31/O-Vermonters/" />
+  <id>http://localhost:4000/general/2015/01/31/O-Vermonters</id>
+  <published>2015-01-31T00:00:00-05:00</published>
+  <updated>2015-01-31T00:00:00-05:00</updated>
+  <author>
+    <name>MappingVermont</name>
+    <uri>http://localhost:4000</uri>
+    <email>charlie@mappingvermont.org</email>
+  </author>
+  <content type="html">Living in Vermont is kind of a big deal. Of those that make this choice, the vast majority are proud to be here-- proud of the ready access to woods and wilderness, proud of the toughness developed over 6-month-long winters, and proud of the delicious food, beer, and maple syrup that it&apos;s tough to find any place else. Not everyone can live in Vermont; it takes a certain kind of person to forgo a high profile career and salary in favor of piecing together seasonal work and a part time job at a non-profit that&apos;s an hour away, but people do it. For this committment and sheer stick-to-it-ness, these people are called &quot;Vermonters&quot;.\\
+\\
+I&apos;m as proud of this appellation as anyone, but lately I&apos;ve been feeling like it&apos;s a bit over-used. Hearing Governor Shumlin&apos;s recent address  brought this to my attention, his nasal tone invoking our collective identity three times in the first five sentences:
+
+{% highlight css %}
+Mr. President, Mr. Speaker, members of the General Assembly, distinguished guests,
+and fellow Vermonters:
+
+Thank you for the tremendous honor and opportunity to serve again as Governor.
+As a Vermonter who grew up, raised my daughters, and built two businesses here, it
+is the greatest privilege of my life to give back to the state that has given me
+so much. I love serving as Governor because I love Vermont.
+
+I have worked hard as Governor to improve life for Vermonters in these
+still-difficult times.
+{% endhighlight %}
+
+I decided to take a look at the use of &quot;Vermonters&quot; in every inaugural address, beginning with Thomas Chittenden in 1779, and compare it to the total words used by each Governor (Chittenden&apos;s 1779 stats: 835 words, 0 &quot;Vermonters&quot;). The Secretary of State has a great [archive](https://www.sec.state.vt.us/archives-records/state-archives/government-history/inaugurals-and-farewells/table-of-addresses.aspx) of these addresses (unfortunately all in PDF), and so I wrote a Python script to download it and convert them to text. For those interested, the text files are available [here](/data/inauguraladdresses).\\
+\\
+I used the NLTK package to count the occurrence of &quot;Vermonter&quot; or &quot;Vermonters&quot; in each document, with the big winner being Jim Douglas, whose 2007 address used the word 33 times. Here&apos;s my favorite sentence from his speech:
+
+{% highlight css %}
+I have warmed the thin hands of older Vermonters, their eyes still sparkling
+between deep gray granite lines of age.
+{% endhighlight %}
+
+I also wanted to see how these trends played out over time. I wrote the results to CSV, and then graphed word count over time, with the &quot;Vermonter&quot; count symbolized by the size of each point. Much is owed to this great [D3 graph example](http://wrobstory.github.io/2013/11/D3-brush-and-tooltip.html) and this [stack exchange post](http://stackoverflow.com/questions/22651346/how-to-embed-a-d3-js-example-to-the-jekyll-blog-post) about integrating D3 with Jekyll. Here&apos;s the final product:
+
+&lt;style&gt;
+
+#example .point {
+  fill: #2f225d;
+  stroke: #afa2dc;
+}
+
+#example .selected {
+  fill: #afa2dc;
+  stroke: #2f225d;
+}
+
+#example .axis {
+  font: 10px sans-serif;
+}
+
+#example p {
+  font: 12px sans-serif;
+  margin: 0 0 0 0;
+  padding: 0;
+}
+
+#main .tooltip {
+  font: 12px sans-serif;
+  margin: 0 0 0 0;
+  padding: 0;
+}
+
+#example .clear-button {
+  font: 14px sans-serif;
+  cursor: pointer;
+}
+
+#example .axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+#example .brush .extent {
+  stroke: #fff;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}
+&lt;/style&gt;
+&lt;script src=&quot;https://d3js.org/d3.v3.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+d3.helper = {};
+
+d3.helper.tooltip = function(){
+    var tooltipDiv;
+    var bodyNode = d3.select(&apos;div#main&apos;).node();
+
+    function tooltip(selection){
+
+        selection.on(&apos;mouseover.tooltip&apos;, function(pD, pI){
+            // Clean up lost tooltips
+            d3.select(&apos;div#main&apos;).selectAll(&apos;div.tooltip&apos;).remove();
+            // Append tooltip
+            tooltipDiv = d3.select(&apos;div#main&apos;)
+                           .append(&apos;div&apos;)
+                           .attr(&apos;class&apos;, &apos;tooltip&apos;)
+            var absoluteMousePos = d3.mouse(bodyNode);
+            tooltipDiv.style({
+
+                left: (absoluteMousePos[0])+&apos;px&apos;,
+                top: (absoluteMousePos[1])+&apos;px&apos;,
+                &apos;background-color&apos;: &apos;#d8d5e4&apos;,
+                width: &apos;170px&apos;,
+                height: &apos;60px&apos;,
+                padding: &apos;5px&apos;,
+                position: &apos;absolute&apos;,
+                &apos;z-index&apos;: 1001,
+                &apos;box-shadow&apos;: &apos;0 1px 2px 0 #656565&apos;
+            });
+
+            var first_line = &apos;&lt;p&gt;Governor: &apos; + pD.governor + &apos;&lt;br&gt;&apos;
+            var second_line = &apos;Year: &apos; + pD.year + &apos;&lt;br&gt;&apos;
+            var third_line = &apos;Total Words: &apos; + pD.totalwords_text + &apos;&lt;br&gt;&apos;
+            var fourth_line = &apos;Number of &quot;Vermonters&quot;: &apos; + pD.numvermonters
+
+            tooltipDiv.html(first_line + second_line + third_line + fourth_line)
+        })
+        .on(&apos;mousemove.tooltip&apos;, function(pD, pI){
+            // Move tooltip
+            var absoluteMousePos = d3.mouse(bodyNode);
+            tooltipDiv.style({
+                left: (absoluteMousePos[0] - 190)+&apos;px&apos;,
+                top: (absoluteMousePos[1] + 10)+&apos;px&apos;
+            });
+        })
+        .on(&apos;mouseout.tooltip&apos;, function(pD, pI){
+            // Remove tooltip
+            tooltipDiv.remove();
+        });
+
+    }
+
+    tooltip.attr = function(_x){
+        if (!arguments.length) return attrs;
+        attrs = _x;
+        return this;
+    };
+
+    tooltip.style = function(_x){
+        if (!arguments.length) return styles;
+        styles = _x;
+        return this;
+    };
+
+    return tooltip;
+};
+
+var data = [];
+var values = [];
+
+
+d3.csv(&quot;/data/inauguraladdresses/wordcount.csv&quot;, function(csvData) {
+
+  csvData.forEach(function(d) {
+
+	data.push({
+	index: +d.UniqueID,
+    year: +d.Year,
+    governor: d.Governor,
+    totalwords: d.Totalwords,
+    totalwords_text: d.Totalwords_STR,
+    numvermonters: +d.Numberofvermonters,
+    pcttotal: parseFloat(d.Pctwords)
+	});
+
+	values.push(+d.Totalwords);
+
+  });
+  buildChart(data);
+})
+
+function buildChart(inputData){
+
+	var margin = {top: 20, right: 50, bottom: 60, left: 40},
+		width = 720 - margin.left - margin.right,
+		height = 500 - margin.top - margin.bottom;
+
+	var x = d3.scale.linear()
+		.range([0, width])
+		.domain([1775, 2026]);
+
+	var y = d3.scale.linear()
+		.range([height, 0])
+		.domain([0, d3.max(values) + 100]);
+
+	var brush = d3.svg.brush()
+		.x(x)
+		.on(&quot;brush&quot;, brushmove)
+		.on(&quot;brushend&quot;, brushend);
+
+	var xAxis = d3.svg.axis()
+		.scale(x)
+		.orient(&quot;bottom&quot;).tickFormat(d3.format(&quot;d&quot;));
+
+	var yAxis = d3.svg.axis()
+		.scale(y)
+		.orient(&quot;left&quot;)
+		.ticks(11);
+
+	var svg = d3.select(&quot;div#example&quot;).append(&quot;svg&quot;)
+		.attr(&quot;width&quot;, width + margin.left + margin.right)
+		.attr(&quot;height&quot;, height + margin.top + margin.bottom)
+	  .append(&quot;g&quot;)
+		.attr(&quot;transform&quot;, &quot;translate(&quot; + margin.left + &quot;,&quot; + margin.top + &quot;)&quot;);
+
+	svg.append(&quot;g&quot;)
+		.attr(&quot;class&quot;, &quot;x axis&quot;)
+		.attr(&quot;clip-path&quot;, &quot;url(#clip)&quot;)
+		.attr(&quot;transform&quot;, &quot;translate(0,&quot; + height + &quot;)&quot;)
+		.call(xAxis);
+
+	svg.append(&quot;g&quot;)
+		.attr(&quot;class&quot;, &quot;y axis&quot;)
+		.call(yAxis);
+
+	svg.append(&quot;g&quot;)
+		.attr(&quot;class&quot;, &quot;brush&quot;)
+		.call(brush)
+	  .selectAll(&apos;rect&apos;)
+		.attr(&apos;height&apos;, height);
+
+	svg.append(&quot;defs&quot;).append(&quot;clipPath&quot;)
+		.attr(&quot;id&quot;, &quot;clip&quot;)
+	  .append(&quot;rect&quot;)
+		.attr(&quot;width&quot;, width)
+		.attr(&quot;height&quot;, height + 20);
+
+	points = svg.selectAll(&quot;.point&quot;)
+		.data(inputData)
+	  .enter().append(&quot;circle&quot;)
+		.attr(&quot;class&quot;, &quot;point&quot;)
+		.attr(&quot;clip-path&quot;, &quot;url(#clip)&quot;)
+		.attr(&quot;r&quot;, function(d){return d.numvermonters + 1.75;})
+		.attr(&quot;cx&quot;, function(d) { return x(d.year); })
+		.attr(&quot;cy&quot;, function(d) { return y(d.totalwords); })
+		.call(d3.helper.tooltip());
+
+	points.on(&apos;mousedown&apos;, function(){
+	  brush_elm = svg.select(&quot;.brush&quot;).node();
+	  new_click_event = new Event(&apos;mousedown&apos;);
+	  new_click_event.pageX = d3.event.pageX;
+	  new_click_event.clientX = d3.event.clientX;
+	  new_click_event.pageY = d3.event.pageY;
+	  new_click_event.clientY = d3.event.clientY;
+	  brush_elm.dispatchEvent(new_click_event);
+	});
+
+	function brushmove() {
+	  var extent = brush.extent();
+	  points.classed(&quot;selected&quot;, function(d) {
+		is_brushed = extent[0] &lt;= d.year &amp;&amp; d.year &lt;= extent[1];
+		return is_brushed;
+	  });
+	}
+
+	function brushend() {
+	  get_button = d3.select(&quot;.clear-button&quot;);
+	  if(get_button.empty() === true) {
+		clear_button = svg.append(&apos;text&apos;)
+		  .attr(&quot;y&quot;, 460)
+		  .attr(&quot;x&quot;, 540)
+		  .attr(&quot;class&quot;, &quot;clear-button&quot;)
+		  .text(&quot;Clear Brush&quot;);
+	  }
+
+	  x.domain(brush.extent());
+
+	  transition_data();
+	  reset_axis();
+
+	  points.classed(&quot;selected&quot;, false);
+	  d3.select(&quot;.brush&quot;).call(brush.clear());
+
+	  clear_button.on(&apos;click&apos;, function(){
+		x.domain([1778, 2016]);
+		transition_data();
+		reset_axis();
+		clear_button.remove();
+	  });
+	}
+
+	function transition_data() {
+	  svg.selectAll(&quot;.point&quot;)
+		.data(data)
+	  .transition()
+		.duration(500)
+		.attr(&quot;cx&quot;, function(d) { return x(d.year); });
+	}
+
+	function reset_axis() {
+	  svg.transition().duration(500)
+	   .select(&quot;.x.axis&quot;)
+	   .call(xAxis);
+	}
+}
+
+&lt;/script&gt;
+
+&lt;div id=&quot;example&quot;&gt;&lt;/div&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/general/2015/01/31/O-Vermonters/&quot;&gt;O Vermonters!&lt;/a&gt; was originally published by MappingVermont at &lt;a href=&quot;http://localhost:4000&quot;&gt;Mapping Vermont&lt;/a&gt; on January 31, 2015.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[Static static static]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/web/2015/01/30/Static-Static-Static/" />
+  <id>http://localhost:4000/web/2015/01/30/Static-Static-Static</id>
+  <published>2015-01-30T00:00:00-05:00</published>
+  <updated>2015-01-30T00:00:00-05:00</updated>
+  <author>
+    <name>MappingVermont</name>
+    <uri>http://localhost:4000</uri>
+    <email>charlie@mappingvermont.org</email>
+  </author>
+  <content type="html">When I first made a tentative foray into web development a few years ago, I did so with the help of [this great book](http://www.amazon.com/Learning-MySQL-JavaScript-HTML5-Step/dp/1491949465) from O&apos;Reilly. It had flying squirrels on the cover, and provided a very gentle introduction to the world of dynamic websites.\\
+\\
+I wanted to build a tool to map E911 addresses, and did so using the stack outlined in this book: the JavaScript on my site passed a town name to PHP, which then queried a MySQL database, returning all the addresses in the town of interest. I handled this response in JavaScript, converting the returned rows into GeoJSON on the fly, then adding them to the Leaflet map. This was kind of a pain to setup-- I had to create a database on Amazon RDS, connect to it via the command line to insert all 300,000 records, learn a little PHP to talk to it, and then experiment with JavaScript until I had the GeoJSON string just right.\\
+\\
+I did get it set up, and things were great until Amazon decided to start charging me $20/month for a database that was rarely used. Faced with this issue I started to brainstorm other solutions-- how could I query all the addresses by town, convert to GeoJSON, and then load that into the webmap? My first thought was MongoDB: I could host it on my server, and given that it&apos;s designed to handle JSON documents, it seemed like a natural fit. I was all set to proceed when a quick check on my available disk space (all of 2 GB) ruled out this option.\\
+\\
+I was doing some work with [geojson.io](geojson.io) and noticed that one way to save your features was to write them to a Github Gist. This got me thinking about keeping static .geojson files on my server. I could add all these features to a map-- no need to build the GeoJSON string from scratch each time. And it&apos;s not like the addresses change very often, nor do I really need to update them if they do. A database-oriented system certainly has the advantage in this respect, but I wasn&apos;t changing the data, and can update it just as easily by replacing the GeoJSON files on the server if need be.\\
+\\
+I used arcpy to export each town to a separate shapefile, then ogr2ogr to batch process all to GeoJSON. I modifed the JavaScript to build a path to the GeoJSON file using the user-supplied town, and the rest, as they say, is history. The E911 viewer runs a little faster, and is a lot cheaper to host.
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/web/2015/01/30/Static-Static-Static/&quot;&gt;Static static static&lt;/a&gt; was originally published by MappingVermont at &lt;a href=&quot;http://localhost:4000&quot;&gt;Mapping Vermont&lt;/a&gt; on January 30, 2015.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[Exploring Montpelier in 1915]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/general/2014/11/23/SanbornMontpelier/" />
+  <id>http://localhost:4000/general/2014/11/23/SanbornMontpelier</id>
+  <updated>2014-11-23T00:00:00-00:00</updated>
+  <published>2014-11-23T00:00:00-05:00</published>
+  
+  <author>
+    <name>MappingVermont</name>
+    <uri>http://localhost:4000</uri>
+    <email>charlie@mappingvermont.org</email>
+  </author>
+  <content type="html">I remember the day I first learned about Sanborn maps. I was in college, taking Historical Geography, and my professor was talking about potential sources for our independent projects. I&apos;m not sure where they fell in the long list of options-- census data, birds eye views, various gazeteers, but I was spellbound when she began to describe Sanborn maps. &quot;The Sanborn maps&quot;, she said, &quot;are a collection of incredibly detailed maps of every downtown in Vermont-- each building drawn to scale and labeled. Towns were surveyed roughly every ten years, beginning in the 1880s, and continuing into the 1940s.&quot; What a resource! What an incredible record of industry and culture and morphology for the downtowns that we&apos;ve inherited today!\\
+\\
+Needless to say, I incorporated Sanborn data into my independent project for my Historical Geography course, and continue to find ways to bring this information into personal and professional work. The one drawback to working with Sanborn maps is their limited availability. Maps made after 1922 are currently protected under copyright law, and many maps before that date have never been scanned.\\
+\\
+Unfortunately for someone interested in web mapping, neither of these resources (proprietary PDFs or free paper maps) are of much use. Enter the [Library of Congress](http://www.loc.gov/rr/geogmap/sanborn/states.php?stateID=52), which has scanned a few of the many Sanborn maps in its collection. Why they chose Lyndonville, Manchester, Middlebury, Montpelier, and Morrisville I don&apos;t know, but I&apos;m very thankful that they did, ultimately selecting Montpelier to try and bring to the web. [UVM Special Collections](http://cdi.uvm.edu/collections/getCollection.xql?pid=btvfi) has scanned Burlington&apos;s Sanborn maps, but the thought of mapping an actual city was a little intimidating when I was just beginning the project.\\
+\\
+I began by downloading all of Montpelier maps for 1915, the most recent year available. I used Adobe Illustrator to stitch the images together, then georeferenced the output in ArcGIS. The resulting tiff had different x and y dimensions, so I resampled it, selecting the smallest resolution available (1 cm) in hopes of keeping the map annotation legible. While this wasn&apos;t the most difficult part of the process, it was probably the most CPU intensive-- it took my machine a total of 250 hours to resample the raster. I then used TileMill to process the raster into a tile package, and am serving them using this [PHP script](http://carte-libre.fr/map/mbtiles-server-php-demo/mbtiles-server.php.txt).\\
+\\
+There you have it. After many challenges-- technological, historical, artistic, the web map is finally up. I&apos;ve added some historical photographs too-- I think it makes the map a little more interactive. Please get in touch with questions/comments, especially if you&apos;re interested in collaborating on this work for another town in Vermont! Here&apos;s the final product:\\
+\\
+[Mapping Historic Montpelier](/projects/sanborn/montpelier)
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/general/2014/11/23/SanbornMontpelier/&quot;&gt;Exploring Montpelier in 1915&lt;/a&gt; was originally published by MappingVermont at &lt;a href=&quot;http://localhost:4000&quot;&gt;Mapping Vermont&lt;/a&gt; on November 23, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[Mapping Honky Tonk Tuesday]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/web/2014/05/10/Mapping-Honky-Tonk-Tuesday/" />
+  <id>http://localhost:4000/web/2014/05/10/Mapping-Honky-Tonk-Tuesday</id>
+  <updated>2013-05-10T00:00:00-00:00</updated>
+  <published>2014-05-10T00:00:00-04:00</published>
+  
+  <author>
+    <name>MappingVermont</name>
+    <uri>http://localhost:4000</uri>
+    <email>charlie@mappingvermont.org</email>
+  </author>
+  <content type="html">On any Tuesday at the Radio Bean, one can hear the sounds of honky tonk music played into the early morning. The band draws quite a crowd-- some who want to dance to the upbeat rhythm and blues, others who want to stand in the back, one hand in a pocket while the other grips a beer, and bear witness to the mournful moan of that steel guitar. Whatever you&apos;re looking for, Honky Tonk has it-- something about that intimate space, good musicians, and high lonesome sounds always seems to set me right.\\
+\\
+I grew up listening to this music. My dad is a big country fan, and we&apos;d listen to 90&apos;s country every chance we got. I hadn&apos;t given it much thought since then, but hearing it again really got me wondering-- where does this music come from? I had a vague sense that it was Southern, some combination of early rock, New Orleans piano, and traditional Appalachian music.\\
+\\
+After discovering the [Honky Tonk Tuesday archive](http://www.honkytonktuesday.com/), I used python to scrape the setlist from each recording, then used SQL to count each time a particular song had been played. I then found the original artist for each song, and recorded their birthplace. Finally (and this gets to the mapping part) I totaled the number of times the Honky Tonk Tuesday band had played each artist, and drew a corresponding point on a map. More on the python scraping and geocoding in later posts, the map is here:\\
+\\
+[http://mappingvermont.org/projects/htt/](/projects/htt/)
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/web/2014/05/10/Mapping-Honky-Tonk-Tuesday/&quot;&gt;Mapping Honky Tonk Tuesday&lt;/a&gt; was originally published by MappingVermont at &lt;a href=&quot;http://localhost:4000&quot;&gt;Mapping Vermont&lt;/a&gt; on May 10, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[Migrating to Jekyll]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/general/2014/02/28/Jekyll/" />
+  <id>http://localhost:4000/general/2014/02/28/Jekyll</id>
+  <updated>2014-02-28T00:00:00-00:00</updated>
+  <published>2014-02-28T00:00:00-05:00</published>
+  
+  <author>
+    <name>MappingVermont</name>
+    <uri>http://localhost:4000</uri>
+    <email>charlie@mappingvermont.org</email>
+  </author>
+  <content type="html">I started this blog using Wordpress, and put some significant time into customizing my WP installation. I found a theme I liked, edited a lot of the settings, installed some plugins to style my site. Things were looking pretty good, I thought, until I visited the site at work. Even with the the uber-fast internet we have, I was staring at a blank page for a few seconds before it loaded. After doing research, it became clear that in addition to the added plugins, the PHP-driven nature of a dynamic CMS was slowing things down.\\
+\\
+In addition to poor loading times, the lack of transparency frustrated me. There were hundreds of files in the wp-admin folder on my site, and I had no idea how they worked. I had some control over the website layout (theme, background image, text), and could use plugins to achieve the rest (code syntax highlighting, disqus comments, analytics), but each of these had to be configured or installed in the admin interface. Even the text editor started to annoy me, and I ended up writing most of my text in Notepad++ and pasting it in to the WYSIWYG editor format it.\\
+\\
+I started looking around for a lightweight CMS. I don&apos;t know much about web programming, and didn&apos;t know what to expect. Was it possible to use a designer-built theme, but make custom tweaks to the HTML? Could I get away with not using a database? Would it be easy to migrate if I changed hosting providers? Enter [Jekyll](http://jekyllrb.com/), a static site generator written in Ruby that makes it easy to directly edit page HTML and even easier to format blog posts in your favorite text editor.\\
+\\
+After a brief false start trying to publish my blog via GitHub Pages, I installed Ruby and Jekyll locally. I downloaded a great theme from [Michael Rose](http://mademistakes.com/) and went to work putting together the site. Posts are stored as text files, which are then processed by Jekyll into static HTML, complete with all formatting of your theme. Jekyll uses Markdown to parse these text files, making it easy to format my text using pre-set tags. For example, to highlight syntax in a chunk of code, I can include the &amp;#123;% highlight python %&amp;#125; tag:
+
+{% highlight python %}
+for example in exampleList:
+	print &quot;This is Jekyll&quot;
+{% endhighlight %}
+
+Not bad huh? Other Markdown tags allow for heading formatting, block quotes, and more. When I finish a post I run Jekyll, then copy the static site (folders, data, and pages) to my web hosting service. Looking forward to developing some Leaflet storymap templates and deploying them with Jekyll-- stay tuned.
+
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/general/2014/02/28/Jekyll/&quot;&gt;Migrating to Jekyll&lt;/a&gt; was originally published by MappingVermont at &lt;a href=&quot;http://localhost:4000&quot;&gt;Mapping Vermont&lt;/a&gt; on February 28, 2014.&lt;/p&gt;</content>
+</entry>
+
+</feed>

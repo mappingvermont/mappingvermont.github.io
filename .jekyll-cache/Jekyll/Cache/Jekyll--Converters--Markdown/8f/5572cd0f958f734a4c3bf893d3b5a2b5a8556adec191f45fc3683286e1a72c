@@ -1,0 +1,29 @@
+I"]<p>Whenever I see a historic marker in Vermont, I have to stop and look at it. You never know what might have happened in this very spot two hundred years ago– a future president born, a revolutionary war battle, or a whole industrial apparatus alive in this now-empty meadow. In addition to formally recognizing such sites with that classic green plaque, the State has also posted a list of their locations (albeit in a hard to read/harder to download iframe table format) on their <a href="http://historicsites.vermont.gov/roadside_markers/list">website</a>.<br />
+<br />
+Seeing a list of locations in the state, my first instinct was to map it. Looking at the dataset further, however, I realized that less than half of the entries had an actual latitude and longitude. Most locations were fairly well described- “intersection of Brook Rd and Thaddeus Stevens Rd”- but some just called out nearby landmarks, i.e. “near the village”. With the help of auxilary sources such as <a href="http://www.waymarking.com/cat/details.aspx?f=1&amp;guid=9cd074cf-33c7-4e49-8c79-0cde5f9c39a6&amp;st=2">wayfaring.com</a> and the <a href="http://www.historicalmarkerproject.com">Historical Marker Project</a>, as well as various town and city websites, I set out to georeference the remaining markers.<br />
+<br />
+This research is not what I’d prefer to spend my free time on, but any project requires data cleanup, and some more than others. I was able to locate all but three historic markers. They are, in no particular order:</p>
+<ul>
+  <li>State Seal Pine Tree, North of Route 313 &amp; West of 7, Arlington</li>
+  <li>D.P. Thompson, Montpelier - Barre Rd, Montpelier</li>
+  <li>Levi P. Morton, Route 22A, north of village, Shoreham</li>
+</ul>
+
+<p><br />
+Mapping the remaining 200+ markers was an interesting exercise. From my time in Burlington, I’ve definitely noticed a lot of markers there– celebrating Ethan Allen, various Civil War regiments, and the creation of the pedestrian mecca that is Church St, among other things. Seeing them all on a map (fourteen in total) made me start to think about historical marker distribution. Investigation of other high-density historical marker areas (I’m looking at you Woodstock and Dorset) only led to more questions. Questions like . . . why doesn’t Barre have a single historic marker, and Woodstock has five?<br />
+<br />
+I suspect it might have a little something to with tourism, and with the motivated local governments that submit such historic prose to the State. Here’s one of my favorite examples of a ‘historic’ marker, this in the village of Belmont, but that could easily apply to any hamlet in the state:</p>
+
+<figure class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">Mechanicsville</span> <span class="nt">was</span> <span class="nt">a</span> <span class="nt">village</span> <span class="nt">center</span> <span class="nt">in</span> <span class="nt">the</span> <span class="nt">Town</span> <span class="nt">of</span> <span class="nt">Mount</span> <span class="nt">Holly</span><span class="o">,</span> <span class="nt">which</span> <span class="nt">was</span> <span class="nt">chartered</span>
+<span class="nt">in</span> <span class="err">1792</span><span class="o">.</span> <span class="nt">The</span> <span class="nt">village</span> <span class="nt">prospered</span> <span class="nt">with</span> <span class="nt">the</span> <span class="nt">growth</span> <span class="nt">of</span> <span class="nt">water-powered</span> <span class="nt">manufacturing</span><span class="o">,</span> <span class="nt">that</span>
+<span class="nt">included</span> <span class="nt">sawmills</span><span class="o">,</span> <span class="nt">gristmills</span><span class="o">,</span> <span class="nt">wheelwrights</span><span class="o">,</span> <span class="nt">furniture</span> <span class="nt">shops</span><span class="o">,</span> <span class="nt">and</span> <span class="nt">the</span> <span class="nt">A</span><span class="nc">.P</span><span class="o">.</span> <span class="nt">Chase</span>
+<span class="nt">Toy</span> <span class="nt">Factory</span><span class="o">.</span> <span class="nt">As</span> <span class="nt">manufacturing</span> <span class="nt">declined</span><span class="o">,</span> <span class="nt">Mechanicsville</span> <span class="nt">became</span> <span class="nt">popular</span> <span class="nt">with</span>
+<span class="nt">vacationers</span><span class="o">.</span> <span class="nt">The</span> <span class="nt">citizens</span> <span class="nt">petitioned</span> <span class="nt">to</span> <span class="nt">have</span> <span class="nt">the</span> <span class="nt">village</span> <span class="nt">name</span> <span class="nt">changed</span> <span class="nt">to</span> <span class="nt">Belmont</span> <span class="nt">to</span>
+<span class="nt">better</span> <span class="nt">fit</span> <span class="nt">the</span> <span class="nt">image</span> <span class="nt">of</span> <span class="nt">an</span> <span class="nt">idyllic</span> <span class="nt">summer</span> <span class="nt">retreat</span><span class="o">.</span> <span class="nt">The</span> <span class="nt">change</span> <span class="nt">was</span> <span class="nt">enacted</span> <span class="nt">on</span>
+<span class="nt">September</span> <span class="err">2</span><span class="nt">nd</span><span class="o">,</span> <span class="err">1911</span><span class="o">.</span></code></pre></figure>
+
+<p><br />
+See below for a link to the map of the state’s historic markers. Feel free to comment if any locations are wrong, or if you discover any errors in the text.<br />
+<br />
+<a href="/projects/vermont-historic-sites">Vermont’s Historic Sites</a></p>
+:ET

@@ -1,0 +1,8 @@
+I"�<p>I’m not much of a hockey fan, but my buddy <a href="https://bobsbreakdowns.wordpress.com/">Bob Fitch</a> showed me a great API that lists information for every player in the NHL (example: <a href="http://nhlwc.cdnak.neulion.com/fs1/nhl/league/teamroster/bos/iphone/clubroster.json">Boston</a>). Included in this info is the player’s vital stats, twitter handle, and, most importantly, their birthplace. If there’s one thing better than an API, it’s an API with really cool geographic data.<br />
+<br />
+Per always, I put together a <a href="https://github.com/mappingvermont/nhl-birthplaces/blob/master/geocodeBirthplace.py">python script</a> to geocode these towns using Google’s geocoder. I wrote the output to a bunch of <a href="https://github.com/mappingvermont/nhl-birthplaces/tree/master/outGeoJSON">geoJSON files</a>- both team-specific and all players in the NHL. From here I put this data into in my standard mapping template, and added a filter to allow users to show/hide data by team.<br />
+<br />
+Here’s the application: <a href="/projects/nhl-birthplaces">https://www.mappingvermont.org/projects/nhl-birthplaces</a><br />
+<br />
+Unfortunately there are no current NHL players from VT, but we do have the immortal <a href="https://en.wikipedia.org/wiki/John_LeClair">John LeClair</a> to our credit. Next up, we’ll look through <a href="http://www.seanlahman.com/baseball-archive/statistics/">Sean Lahman’s baseball database</a> for evidence of Vermont athletic prowess.</p>
+:ET
