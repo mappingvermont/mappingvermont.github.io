@@ -14,6 +14,7 @@ If I'm particularly interested in something, I'll try and put together a map / s
 
 ## 2017
 
+- [VT Town Tracker - now discontinued](/projects/vt-town-tracker)
 - [Comparing the Beers map of Cambridgeport to current lidar](/projects/cambridgeport-mill-analysis)
 - [Georeferencing and tiling Sanborn maps](/projects/sanborn-vt)
 
