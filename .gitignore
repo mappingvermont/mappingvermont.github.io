@@ -1,0 +1,4 @@
+# vim!
+*.swp
+_site/
+.jekyll-cache/

@@ -1,12 +1,11 @@
 ---
 layout: page
-permalink: /about/
-title: About Mapping Vermont
-tagline: More about Vermont
-tags: [about, mapping, vermont]
-modified: 9-9-2013
+permalink: /projects/
+title: Standalone projects
+tags: [projects, mapping, vermont]
+modified: 12-31-2023
 image:
-  feature: texture-feature-02.jpg
+  feature: texture-feature-07.jpg
   credit: Middlebury College
   creditlink: https://archive.org/details/middleburycollegemaps
 ---

@@ -7,7 +7,7 @@ tags: [Vermont, data]
 image:
   feature: texture-feature-03.jpg
   credit: Middlebury College
-  creditlink: http://guides.middlebury.edu/vermontiana
+  creditlink: https://archive.org/details/middleburycollegemaps
 ---
 
 [Inaugural addresses of Vermont's governors, converted to text files](/data/inauguraladdresses/)

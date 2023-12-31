@@ -1,8 +1,0 @@
-I"<p>On any Tuesday at the Radio Bean, one can hear the sounds of honky tonk music played into the early morning. The band draws quite a crowd– some who want to dance to the upbeat rhythm and blues, others who want to stand in the back, one hand in a pocket while the other grips a beer, and bear witness to the mournful moan of that steel guitar. Whatever you’re looking for, Honky Tonk has it– something about that intimate space, good musicians, and high lonesome sounds always seems to set me right.<br />
-<br />
-I grew up listening to this music. My dad is a big country fan, and we’d listen to 90’s country every chance we got. I hadn’t given it much thought since then, but hearing it again really got me wondering– where does this music come from? I had a vague sense that it was Southern, some combination of early rock, New Orleans piano, and traditional Appalachian music.<br />
-<br />
-After discovering the <a href="http://www.honkytonktuesday.com/">Honky Tonk Tuesday archive</a>, I used python to scrape the setlist from each recording, then used SQL to count each time a particular song had been played. I then found the original artist for each song, and recorded their birthplace. Finally (and this gets to the mapping part) I totaled the number of times the Honky Tonk Tuesday band had played each artist, and drew a corresponding point on a map. More on the python scraping and geocoding in later posts, the map is here:<br />
-<br />
-<a href="/projects/htt/">http://mappingvermont.org/projects/htt/</a></p>
-:ET

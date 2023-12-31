@@ -7,5 +7,5 @@ tags: [blog]
 image:
   feature: texture-feature-05.jpg
   credit: Middlebury College
-  creditlink: http://guides.middlebury.edu/vermontiana
+  creditlink: https://archive.org/details/middleburycollegemaps
 ---
