@@ -1,7 +1,7 @@
 ---
 layout: page
 permalink: /projects/
-title: Standalone projects
+title: Projects
 tags: [projects, mapping, vermont]
 modified: 12-31-2023
 image:
@@ -10,4 +10,29 @@ image:
   creditlink: https://archive.org/details/middleburycollegemaps
 ---
 
-Mapping Vermont is a project to collect, develop and map non-traditional datasets within the state. The blog will also examine technology-- how to give people the ability to make maps, share photos and audio, and tell their own stories. If you have a cool dataset to share, or a story you'd like to tell, send me an email: charlie [dot] lefrak [at] gmail [dot] com. Thanks!
+If I'm particularly interested in something, I'll try and put together a map / small web app of it. Here's what I've done so far:
+
+## 2017
+
+- [Comparing the Beers map of Cambridgeport to current lidar](/projects/cambridgeport-mill-analysis)
+- [Georeferencing and tiling Sanborn maps](/projects/sanborn-vt)
+
+## 2016
+
+- [Counting words in VT road names by town](/projects/vt-road-names)
+- [DC fire stations](/projects/dc-fire-stations)
+- [Hockey player's hometowns](/projects/nhl-birthplaces)
+- [Our holiday card database](/projects/holiday-cards)
+
+## 2015
+
+- [Vermont's historic sites](/projects/vermont-historic-sites)
+
+## 2014
+
+- [Honky Tonk Tuesday songs](/projects/htt)
+
+
+## 2013
+
+- [E911 Address viewer](/projects/e911-locator)
