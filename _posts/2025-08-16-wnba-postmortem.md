@@ -16,7 +16,7 @@ The code for this all lives in [this repo](https://github.com/mappingvermont/wnb
 
 ESPN has a pretty good draft UI. It shows projected points, points in the last year, etc. I selected Arike Ogunbowale with my first pick in the draft. I've been blaming most of my struggles on her lack of output, but when comparing her drafted position to her total point rank, it's not that bad - I drafted her #5 and she's #29 overall. Not exactly what you'd want from your #5, but not terrible. Let's replay the rest of the draft showing total points rank:
 
-<details markdown="1"><summary>- Draft and current player rankings by total points</summary>
+<details markdown="1"><summary><strong> 👉 Draft and current player rankings by total points 👈 </strong></summary>
 
 | Image | Player | Team | Overall Pick #  | Points Rank   | Emoji |
 | ---------------------------------------------------------------------------------------------- | ------------------ | ------------------------ | -- | --- | - |
@@ -77,3 +77,66 @@ ESPN has a pretty good draft UI. It shows projected points, points in the last y
 
 </details>
 
+
+## Undrafted diamonds in the rough
+
+Who was the best undrafted player by points?
+
+| Image | Player | Team | Points Rank |
+| ---------------------------------------------------------------------------------------------- | ------------------- | ----------------- | -- |
+| ![](https://a.espncdn.com/combiner/i?img=/i/headshots/wnba/players/full/4398935.png&h=40&cb=1) | Veronica Burton     | Renick's Ringers  | 22 |
+| ![](https://a.espncdn.com/combiner/i?img=/i/headshots/wnba/players/full/2491214.png&h=40&cb=1) | Erica Wheeler       | N/A               | 32 |
+| ![](https://a.espncdn.com/combiner/i?img=/i/headshots/wnba/players/full/4398915.png&h=40&cb=1) | Naz Hillmon         | Renick's Ringers  | 39 |
+| ![](https://a.espncdn.com/combiner/i?img=/i/headshots/wnba/players/full/2566081.png&h=40&cb=1) | Elizabeth Williams  | Lamdin's Layups   | 42 |
+| ![](https://a.espncdn.com/combiner/i?img=/i/headshots/wnba/players/full/2529622.png&h=40&cb=1) | Kayla Thornton      | N/A               | 44 |
+| ![](https://a.espncdn.com/combiner/i?img=/i/headshots/wnba/players/full/4398966.png&h=40&cb=1) | Olivia Nelson-Ododa | Lefrak Attack     | 46 |
+| ![](https://a.espncdn.com/combiner/i?img=/i/headshots/wnba/players/full/4433514.png&h=40&cb=1) | Saniya Rivers       | N/A               | 47 |
+| ![](https://a.espncdn.com/combiner/i?img=/i/headshots/wnba/players/full/887.png&h=40&cb=1)     | Sami Whitcomb       | N/A               | 48 |
+| ![](https://a.espncdn.com/combiner/i?img=/i/headshots/wnba/players/full/2566186.png&h=40&cb=1) | Rachel Banham       | N/A               | 49 |
+| ![](https://a.espncdn.com/combiner/i?img=/i/headshots/wnba/players/full/2529185.png&h=40&cb=1) | Bria Hartley        | N/A               | 51 |
+
+## The Olivia Nelson-Ododa All Stars
+
+There was one name that came across the transactions tracker more than any other this year - Olivia Nelson-Ododa. She went undrafted, but then was picked up five times 🥂
+
+| Image | Player | Teams | Times Added |
+| ---------------------------------------------------------------------------------------------- | ------------------- | ------------------------------------------------------------------------------- | - |
+| ![](https://a.espncdn.com/combiner/i?img=/i/headshots/wnba/players/full/4398966.png&h=40&cb=1) | Olivia Nelson-Ododa | Lefrak Attack;Renick's Ringers ;Sonia Satoumayor;Sonia Satoumayor;Lefrak Attack | 5 |
+| ![](https://a.espncdn.com/combiner/i?img=/i/headshots/wnba/players/full/4790264.png&h=40&cb=1) | Janelle Salaun      | Lefrak Attack;Lamdin's Layups;Lamdin's Layups                                   | 3 |
+| ![](https://a.espncdn.com/combiner/i?img=/i/headshots/wnba/players/full/4790263.png&h=40&cb=1) | Iliana Rupert       | Lamdin's Layups;Lamdin's Layups;Lamdin's Layups                                 | 3 |
+| ![](https://a.espncdn.com/combiner/i?img=/i/headshots/wnba/players/full/4433514.png&h=40&cb=1) | Saniya Rivers       | Derek's Double Dribblers;Lefrak Attack;Sonia Satoumayor                         | 3 |
+| ![](https://a.espncdn.com/combiner/i?img=/i/headshots/wnba/players/full/887.png&h=40&cb=1)     | Sami Whitcomb       | Renick's Ringers ;Sonia Satoumayor;Lamdin's Layups                              | 3 |
+
+## Drafted and dropped
+
+Many good players were drafted, then dropped, then went on to perform well throughout the season. Here are the top 10 by total points:
+
+| Image | Player | Drafting Team | Current Team | Overall Pick # | Total Points |
+| ---------------------------------------------------------------------------------------------- | ------------------ | ------------------------ | ------------------------ | -- | --- |
+| ![](https://a.espncdn.com/combiner/i?img=/i/headshots/wnba/players/full/2529130.png&h=40&cb=1) | Natasha Howard     | Sonia Satoumayor         | Lefrak Attack            | 36 | 798 |
+| ![](https://a.espncdn.com/combiner/i?img=/i/headshots/wnba/players/full/2987869.png&h=40&cb=1) | Jewell Loyd        | Renick's Ringers         | Derek's Double Dribblers | 18 | 731 |
+| ![](https://a.espncdn.com/combiner/i?img=/i/headshots/wnba/players/full/4398911.png&h=40&cb=1) | Shakira Austin     | Renick's Ringers         | Sonia Satoumayor         | 54 | 694 |
+| ![](https://a.espncdn.com/combiner/i?img=/i/headshots/wnba/players/full/4433630.png&h=40&cb=1) | Rickea Jackson     | Renick's Ringers         | Renick's Ringers         | 31 | 643 |
+| ![](https://a.espncdn.com/combiner/i?img=/i/headshots/wnba/players/full/3142250.png&h=40&cb=1) | Jordin Canada      | Lefrak Attack            | Renick's Ringers         | 53 | 597 |
+| ![](https://a.espncdn.com/combiner/i?img=/i/headshots/wnba/players/full/4398776.png&h=40&cb=1) | NaLyssa Smith      | Derek's Double Dribblers | ∅                        | 39 | 578 |
+| ![](https://a.espncdn.com/combiner/i?img=/i/headshots/wnba/players/full/1054.png&h=40&cb=1)    | Tiffany Hayes      | Sonia Satoumayor         | Lamdin's Layups          | 48 | 535 |
+| ![](https://a.espncdn.com/combiner/i?img=/i/headshots/wnba/players/full/3907781.png&h=40&cb=1) | Sophie Cunningham  | Lamdin's Layups          | Hannah's Hot Shots       | 47 | 512 |
+| ![](https://a.espncdn.com/combiner/i?img=/i/headshots/wnba/players/full/4066548.png&h=40&cb=1) | DiJonai Carrington | Renick's Ringers         | Lefrak Attack            | 42 | 496 |
+| ![](https://a.espncdn.com/combiner/i?img=/i/headshots/wnba/players/full/4683006.png&h=40&cb=1) | Leonie Fiebich     | Lefrak Attack            | Lefrak Attack            | 41 | 492 |
+
+## 👑 Top drafting GM 👑
+
+Finally, let's look at the GM who drafted the best players based on points scored this year. Hint: it wasn't me.
+
+| Team | Total Points Drafted |
+| ------------------------ | ---- |
+| Sonia Satoumayor         | 8316 |
+| Derek's Double Dribblers | 7203 |
+| Renick's Ringers         | 6701 |
+| Lamdin's Layups          | 6576 |
+| Hannah's Hot Shots       | 6154 |
+| Lefrak Attack            | 5772 |
+
+## Wait Til Next Year
+
+Was this analysis informative? Will I draft a better team next year? Is there anything worse than drafting poorly and watching your team underperform? I don't know . . . but very glad I don't gamble! Until next year 🫡
