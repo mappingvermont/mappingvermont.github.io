@@ -6,7 +6,7 @@ title: WNBA Postmortem
 description: "I drafted the perfect WNBA fantasy team - what went wrong?"
 ---
 
-I joined a WNBA fantasy league this year, and let me tell you - I am terrible. I pancicked during the draft, dropped some of my best players during brief injury periods and mismanged my IR. I'm just glad our league didn't trade much - one less reason for fantasy self-loathing. With two weeks left I was 2-8 on the year, and our commissioner had to inform me that I was mathematically eliminated from the playoffs.\\
+I joined a WNBA fantasy league this year, and let me tell you - I am terrible. I panicked during the draft, dropped some of my best players during brief injury periods and mismanged my IR. I'm just glad our league didn't trade much - one less reason for fantasy self-loathing. With two weeks left I was 2-8 on the year, and our commissioner had to inform me that I was mathematically eliminated from the playoffs.\\
 \\
 The silver lining here is that now that the season is over (for me, anyway) it's time for some postmortem data analysis 🔎\\
 \\
