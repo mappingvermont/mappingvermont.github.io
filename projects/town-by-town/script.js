@@ -71,6 +71,17 @@ function renderEpisodeList() {
 	});
 }
 
+function fitPadding() {
+	const isMobile = window.matchMedia("(max-width: 768px)").matches;
+	if (isMobile) {
+		// panel becomes a bottom sheet at 60vh when showing detail (see style.css)
+		return { top: 40, right: 30, bottom: window.innerHeight * 0.6 + 20, left: 30 };
+	}
+	// panel is a fixed-width sidebar on the left (see style.css)
+	const panelWidth = document.getElementById("panel").offsetWidth;
+	return { top: 40, right: 40, bottom: 40, left: panelWidth + 40 };
+}
+
 function selectEpisode(ep) {
 	const feature = townsGeoJSON.features.find((f) => f.properties.TOWNNAME === ep.town);
 	if (!feature) return;
@@ -81,7 +92,7 @@ function selectEpisode(ep) {
 	map.setFeatureState({ source: "towns", id: ep.town }, { selected: true });
 	selectedTown = ep.town;
 
-	map.fitBounds(townBounds(feature), { padding: 60, duration: 800 });
+	map.fitBounds(townBounds(feature), { padding: fitPadding(), duration: 800 });
 
 	document.querySelectorAll(".episode-row").forEach((row) => {
 		row.classList.toggle("active", row.dataset.town === ep.town);
