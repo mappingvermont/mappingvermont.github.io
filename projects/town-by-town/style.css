@@ -2,11 +2,18 @@
 	box-sizing: border-box;
 }
 
+:root {
+	--vp-green: #004c42;
+	--vp-green-dark: #00332c;
+	--vp-teal: #00807f;
+	--vp-teal-dark: #005f5e;
+}
+
 html, body {
 	margin: 0;
 	padding: 0;
 	height: 100%;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
 	color: #1a1a1a;
 }
 
@@ -39,18 +46,28 @@ html, body {
 }
 
 #panel-header {
-	padding: 16px 20px 8px;
+	padding: 18px 20px 14px;
 	flex: none;
+	background: var(--vp-green);
+	color: #ffffff;
+}
+
+#vp-logo {
+	display: block;
+	height: 28px;
+	width: auto;
+	margin: 0 0 12px;
 }
 
 #panel-header h1 {
 	font-size: 1.3em;
+	font-weight: 600;
 	margin: 0 0 6px;
 }
 
 #panel-header p {
 	font-size: 0.85em;
-	color: #555;
+	color: #d7e6e2;
 	margin: 0;
 	line-height: 1.4;
 }
@@ -76,6 +93,7 @@ html, body {
 .episode-row .town-name {
 	font-weight: 600;
 	font-size: 1em;
+	color: var(--vp-green);
 }
 
 .episode-row .episode-date {
@@ -85,8 +103,8 @@ html, body {
 }
 
 .episode-row.active {
-	background: #fff3e0;
-	border-color: #e8a33d;
+	background: #e6f2f1;
+	border-color: var(--vp-teal);
 }
 
 #episode-detail {
@@ -99,8 +117,9 @@ html, body {
 #back-button {
 	background: none;
 	border: none;
-	color: #b5590f;
+	color: var(--vp-teal);
 	font-size: 0.9em;
+	font-weight: 500;
 	padding: 8px 0;
 	cursor: pointer;
 	font-family: inherit;
@@ -108,6 +127,8 @@ html, body {
 
 #detail-town {
 	font-size: 1.4em;
+	font-weight: 600;
+	color: var(--vp-green);
 	margin: 4px 0 2px;
 }
 
@@ -125,7 +146,7 @@ html, body {
 
 #detail-link {
 	display: inline-block;
-	background: #b5590f;
+	background: var(--vp-teal);
 	color: #fff;
 	text-decoration: none;
 	padding: 10px 16px;
@@ -135,7 +156,7 @@ html, body {
 }
 
 #detail-link:hover {
-	background: #943f00;
+	background: var(--vp-teal-dark);
 }
 
 #panel.showing-detail #episode-list {
@@ -171,7 +192,7 @@ html, body {
 	}
 
 	#panel.peek {
-		height: 72px;
+		height: 88px;
 	}
 
 	#panel.peek #panel-header p,
@@ -197,6 +218,11 @@ html, body {
 	#panel-header {
 		padding: 8px 20px 4px;
 		cursor: pointer;
+	}
+
+	#vp-logo {
+		height: 20px;
+		margin: 0 0 6px;
 	}
 
 	#panel-header h1 {

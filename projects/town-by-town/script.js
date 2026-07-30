@@ -143,7 +143,11 @@ map.on("load", async () => {
 		type: "fill",
 		source: "towns",
 		paint: {
-			"fill-color": "#e8a33d",
+			"fill-color": [
+				"case",
+				["boolean", ["feature-state", "selected"], false], "#00807f",
+				"#004c42"
+			],
 			"fill-opacity": [
 				"case",
 				["boolean", ["feature-state", "selected"], false], 0.45,
@@ -158,7 +162,11 @@ map.on("load", async () => {
 		type: "line",
 		source: "towns",
 		paint: {
-			"line-color": "#b5590f",
+			"line-color": [
+				"case",
+				["boolean", ["feature-state", "selected"], false], "#00807f",
+				"#004c42"
+			],
 			"line-width": [
 				"case",
 				["boolean", ["feature-state", "selected"], false], 2.5,
