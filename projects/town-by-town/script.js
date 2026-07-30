@@ -162,4 +162,19 @@ map.on("load", async () => {
 	});
 
 	renderEpisodeList();
+
+	map.on("click", "towns-fill", (e) => {
+		const townName = e.features[0].properties.TOWNNAME;
+		const ep = episodes.find((ep) => ep.town === townName);
+		if (ep) selectEpisode(ep);
+	});
+
+	map.on("mouseenter", "towns-fill", (e) => {
+		const townName = e.features[0].properties.TOWNNAME;
+		map.getCanvas().style.cursor = visitedTowns.includes(townName) ? "pointer" : "";
+	});
+
+	map.on("mouseleave", "towns-fill", () => {
+		map.getCanvas().style.cursor = "";
+	});
 });

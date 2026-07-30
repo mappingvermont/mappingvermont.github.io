@@ -12,6 +12,10 @@ image:
 
 If I'm particularly interested in something, I'll try and put together a map / small web app of it. Here's what I've done so far:
 
+## 2026
+
+- [Town by Town - mapping Vermont Public's monthly town spotlight](/projects/town-by-town)
+
 ## 2017
 
 - [VT Town Tracker - now discontinued](/projects/vt-town-tracker)
