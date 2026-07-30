@@ -6,6 +6,26 @@ const VERMONT_BOUNDS = [-73.9, 42.5, -71.2, 45.3];
 const protocol = new pmtiles.Protocol();
 maplibregl.addProtocol("pmtiles", protocol.tile);
 
+function fitPadding() {
+	const isMobile = window.matchMedia("(max-width: 768px)").matches;
+	if (isMobile) {
+		// panel becomes a bottom sheet at 60vh when showing detail (see style.css)
+		return { top: 40, right: 30, bottom: window.innerHeight * 0.6 + 20, left: 30 };
+	}
+	// panel is a fixed-width sidebar on the left (see style.css)
+	const panelWidth = document.getElementById("panel").offsetWidth;
+	return { top: 40, right: 40, bottom: 40, left: panelWidth + 40 };
+}
+
+function initialFitPadding() {
+	const isMobile = window.matchMedia("(max-width: 768px)").matches;
+	if (isMobile) {
+		return { top: 10, right: 10, bottom: window.innerHeight * 0.45 + 10, left: 10 };
+	}
+	const panelWidth = document.getElementById("panel").offsetWidth;
+	return { top: 10, right: 10, bottom: 10, left: panelWidth + 10 };
+}
+
 const map = new maplibregl.Map({
 	container: "map",
 	style: {
@@ -22,7 +42,7 @@ const map = new maplibregl.Map({
 		layers: basemaps.layers("protomaps", basemaps.namedFlavor("light"), { lang: "en" })
 	},
 	bounds: VERMONT_BOUNDS,
-	fitBoundsOptions: { padding: 20 }
+	fitBoundsOptions: { padding: initialFitPadding() }
 });
 
 map.addControl(new maplibregl.NavigationControl(), "top-right");
@@ -69,17 +89,6 @@ function renderEpisodeList() {
 		row.addEventListener("click", () => selectEpisode(ep));
 		list.appendChild(row);
 	});
-}
-
-function fitPadding() {
-	const isMobile = window.matchMedia("(max-width: 768px)").matches;
-	if (isMobile) {
-		// panel becomes a bottom sheet at 60vh when showing detail (see style.css)
-		return { top: 40, right: 30, bottom: window.innerHeight * 0.6 + 20, left: 30 };
-	}
-	// panel is a fixed-width sidebar on the left (see style.css)
-	const panelWidth = document.getElementById("panel").offsetWidth;
-	return { top: 40, right: 40, bottom: 40, left: panelWidth + 40 };
 }
 
 function selectEpisode(ep) {
