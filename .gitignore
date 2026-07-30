@@ -3,3 +3,6 @@
 _site/
 .jekyll-cache/
 .jekyll-metadata
+
+# town-by-town: PMTiles basemap hosted as a GitHub Release asset, not committed
+projects/town-by-town/data/vermont.pmtiles
