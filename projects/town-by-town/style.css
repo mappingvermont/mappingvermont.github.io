@@ -1,0 +1,231 @@
+* {
+	box-sizing: border-box;
+}
+
+:root {
+	--vp-green: #004c42;
+	--vp-green-dark: #00332c;
+	--vp-teal: #00807f;
+	--vp-teal-dark: #005f5e;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+	color: #1a1a1a;
+}
+
+#map {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+.maplibregl-popup {
+	display: none; /* popups aren't used; info lives in the panel */
+}
+
+/* --- Panel: shared styles --- */
+
+#panel {
+	position: fixed;
+	background: #ffffff;
+	box-shadow: 0 0 16px rgba(0, 0, 0, 0.25);
+	z-index: 10;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+.panel-handle {
+	display: none;
+}
+
+#panel-header {
+	padding: 18px 20px 14px;
+	flex: none;
+	background: var(--vp-green);
+	color: #ffffff;
+}
+
+#vp-logo {
+	display: block;
+	height: 28px;
+	width: auto;
+	margin: 0 0 12px;
+}
+
+#panel-header h1 {
+	font-size: 1.3em;
+	font-weight: 600;
+	margin: 0 0 6px;
+}
+
+#panel-header p {
+	font-size: 0.85em;
+	color: #d7e6e2;
+	margin: 0;
+	line-height: 1.4;
+}
+
+#episode-list {
+	overflow-y: auto;
+	flex: 1;
+	padding: 0 8px 16px;
+}
+
+.episode-row {
+	padding: 12px 12px;
+	margin: 0 4px 6px;
+	border-radius: 8px;
+	cursor: pointer;
+	border: 1px solid transparent;
+}
+
+.episode-row:hover {
+	background: #f2f2f2;
+}
+
+.episode-row .town-name {
+	font-weight: 600;
+	font-size: 1em;
+	color: var(--vp-green);
+}
+
+.episode-row .episode-date {
+	font-size: 0.8em;
+	color: #666;
+	margin-top: 2px;
+}
+
+.episode-row.active {
+	background: #e6f2f1;
+	border-color: var(--vp-teal);
+}
+
+#episode-detail {
+	display: none;
+	overflow-y: auto;
+	flex: 1;
+	padding: 8px 20px 24px;
+}
+
+#back-button {
+	background: none;
+	border: none;
+	color: var(--vp-teal);
+	font-size: 0.9em;
+	font-weight: 500;
+	padding: 8px 0;
+	cursor: pointer;
+	font-family: inherit;
+}
+
+#detail-town {
+	font-size: 1.4em;
+	font-weight: 600;
+	color: var(--vp-green);
+	margin: 4px 0 2px;
+}
+
+#detail-date {
+	font-size: 0.85em;
+	color: #666;
+	margin-bottom: 14px;
+}
+
+#detail-summary {
+	font-size: 0.95em;
+	line-height: 1.5;
+	margin: 0 0 18px;
+}
+
+#detail-link {
+	display: inline-block;
+	background: var(--vp-green);
+	color: #fff;
+	text-decoration: none;
+	padding: 10px 16px;
+	border-radius: 6px;
+	font-size: 0.9em;
+	font-weight: 600;
+}
+
+#detail-link:hover {
+	background: var(--vp-green-dark);
+}
+
+#panel.showing-detail #episode-list {
+	display: none;
+}
+
+#panel.showing-detail #episode-detail {
+	display: block;
+}
+
+/* --- Desktop layout: fixed sidebar --- */
+
+@media (min-width: 769px) {
+	#panel {
+		top: 0;
+		bottom: 0;
+		left: 0;
+		width: 380px;
+		max-width: 90vw;
+	}
+}
+
+/* --- Mobile layout: bottom sheet --- */
+
+@media (max-width: 768px) {
+	#panel {
+		left: 0;
+		right: 0;
+		bottom: 0;
+		border-radius: 16px 16px 0 0;
+		height: 45vh;
+		transition: height 0.25s ease;
+	}
+
+	#panel.peek {
+		height: 88px;
+	}
+
+	#panel.peek #panel-header p,
+	#panel.peek #episode-list,
+	#panel.peek #episode-detail {
+		display: none;
+	}
+
+	#panel.showing-detail {
+		height: 60vh;
+	}
+
+	.panel-handle {
+		display: block;
+		width: 40px;
+		height: 4px;
+		background: #ccc;
+		border-radius: 2px;
+		margin: 10px auto 0;
+		flex: none;
+	}
+
+	#panel-header {
+		padding: 8px 20px 4px;
+		cursor: pointer;
+	}
+
+	#vp-logo {
+		height: 20px;
+		margin: 0 0 6px;
+	}
+
+	#panel-header h1 {
+		font-size: 1.1em;
+	}
+}
