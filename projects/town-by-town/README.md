@@ -47,9 +47,12 @@ Landed on **S3** instead: no file size ceiling, byte-range requests supported na
 
 ## Data files
 
-- `data/towns_simplified.geojson` — all 256 Vermont towns/cities/gores, trimmed to just `TOWNNAME` + geometry (simplified with `mapshaper -simplify visvalingam keep-shapes 10%`, ~2.6MB → 161KB). Town names are title-cased (not `ALL CAPS`, the source format) and used as the join key against `episodes.json`.
+- `data/towns_simplified.geojson` — all 256 Vermont towns/cities/gores, trimmed to just `TOWNNAME` + geometry, **clipped to the official state boundary** and simplified (`mapshaper -simplify visvalingam keep-shapes 10%`, ~373KB). Town names are title-cased (not `ALL CAPS`, the source format) and used as the join key against `episodes.json`.
+- `data/vt_boundary.geojson` — the state boundary itself, as a single simplified `MultiLineString`, drawn as an outline layer over the towns/basemap.
 - `data/episodes.json` — one entry per episode: `town` (must exactly match a `TOWNNAME` in the geojson), `date`, `url` (link to the vermontpublic.org episode page), and `summary` (2–3 sentence blurb, pulled from each episode's article page).
 - `data/raw/VT_Town_Boundaries.geojson` — original unprocessed source file, kept for reference in case the simplified version ever needs regenerating differently.
+
+Both `towns_simplified.geojson` and `vt_boundary.geojson` are generated from a local PostGIS `vt` table (Mapbox Boundaries state polygon), so the town shapes and the boundary line agree with each other exactly — see `data/README.md` for the full regeneration pipeline (clip via `ST_Intersection`, then simplify with mapshaper).
 
 ## Map/panel interaction
 

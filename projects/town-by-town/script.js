@@ -132,12 +132,14 @@ document.getElementById("panel-header").addEventListener("click", () => {
 });
 
 map.on("load", async () => {
-	const [episodesRes, townsRes] = await Promise.all([
+	const [episodesRes, townsRes, boundaryRes] = await Promise.all([
 		fetch("data/episodes.json"),
-		fetch("data/towns_simplified.geojson")
+		fetch("data/towns_simplified.geojson"),
+		fetch("data/vt_boundary.geojson")
 	]);
 	episodes = await episodesRes.json();
 	townsGeoJSON = await townsRes.json();
+	const vtBoundaryGeoJSON = await boundaryRes.json();
 
 	map.addSource("towns", {
 		type: "geojson",
@@ -187,6 +189,21 @@ map.on("load", async () => {
 
 	visitedTowns.forEach((town) => {
 		map.setFeatureState({ source: "towns", id: town }, { visited: true });
+	});
+
+	map.addSource("vt-boundary", {
+		type: "geojson",
+		data: vtBoundaryGeoJSON
+	});
+
+	map.addLayer({
+		id: "vt-boundary-line",
+		type: "line",
+		source: "vt-boundary",
+		paint: {
+			"line-color": "#004c42",
+			"line-width": 2
+		}
 	});
 
 	renderEpisodeList();
