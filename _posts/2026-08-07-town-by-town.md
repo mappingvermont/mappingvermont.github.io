@@ -1,6 +1,6 @@
 ---
 layout: post
-category : sports
+category : ai
 tags : [ai, ui]
 title: Mapping VPR's Town-by-Town Project
 description: "In which I finally produce an aesthetically pleasing web application - with claude"
