@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Bellows Falls, 1900</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" />
+
+	<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css" />
+	<script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
+	<script src="https://unpkg.com/@protomaps/basemaps@5.7.2/dist/basemaps.js"></script>
+	<script src="https://unpkg.com/pmtiles@4.4.1/dist/pmtiles.js"></script>
+
+	<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+	<div id="map"></div>
+
+	<label id="opacity-control" title="Opacity of the 1896 Sanborn map">
+		<span>1896 map</span>
+		<input id="opacity" type="range" min="0" max="100" value="85" aria-label="Sanborn map opacity" />
+	</label>
+
+	<div id="panel">
+		<div class="panel-handle"></div>
+
+		<div id="panel-header">
+			<div class="eyebrow">1900 US Census · 1896 Sanborn maps</div>
+			<h1>Bellows Falls, 1900</h1>
+			<p>Who lived in each house in Bellows Falls village, Vermont. The flag on each house is the most common
+				birthplace among the people over 16 living there. Click a house to see everyone recorded in it.</p>
+		</div>
+
+		<div id="country-filter" role="group" aria-label="Filter houses by birthplace"></div>
+
+		<div id="house-list"></div>
+
+		<div id="house-detail">
+			<button id="back-button">&larr; All houses</button>
+			<div id="detail-body"></div>
+		</div>
+
+		<div id="panel-footer">
+			Census: FamilySearch, ED 259. Maps: Sanborn Map Co., 1896, via the
+			<a href="https://www.loc.gov/collections/sanborn-maps/" target="_blank" rel="noopener">Library of Congress</a>.
+			<span id="sheets-done"></span>
+		</div>
+	</div>
+
+	<script src="script.js"></script>
+</body>
+</html>

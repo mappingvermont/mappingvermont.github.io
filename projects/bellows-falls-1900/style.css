@@ -1,0 +1,475 @@
+* {
+	box-sizing: border-box;
+}
+
+:root {
+	--ink: #1f2a30;
+	--ink-soft: #55626a;
+	--rule: #e6e2da;
+	--paper: #ffffff;
+	--paper-warm: #f7f4ee;
+	--header: #26343b;
+	--header-text: #dfe6e8;
+	--accent: #b4532a; /* Sanborn brick red */
+	--accent-dark: #8f3f1e;
+	--accent-tint: #f6e8e1;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+	color: var(--ink);
+	background: var(--paper-warm);
+}
+
+#map {
+	position: absolute;
+	inset: 0;
+}
+
+/* --- Flag markers --- */
+
+.house-marker {
+	display: flex;
+	align-items: center;
+	gap: 1px;
+	padding: 2px 5px;
+	background: var(--paper);
+	border-radius: 999px;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+	font-size: 18px;
+	line-height: 1;
+	cursor: pointer;
+	border: 2px solid transparent;
+	transition: transform 0.12s ease;
+	font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+}
+
+.house-marker:hover {
+	transform: scale(1.15);
+}
+
+.house-marker.selected {
+	border-color: var(--accent);
+	transform: scale(1.25);
+}
+
+.house-marker-anchor.selected {
+	z-index: 2;
+}
+
+/* --- Panel --- */
+
+#panel {
+	position: fixed;
+	background: var(--paper);
+	box-shadow: 0 0 16px rgba(0, 0, 0, 0.25);
+	z-index: 10;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+.panel-handle {
+	display: none;
+}
+
+#panel-header {
+	padding: 20px 20px 16px;
+	flex: none;
+	background: var(--header);
+	color: #fff;
+}
+
+.eyebrow {
+	font-size: 0.7em;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: #e9a383;
+	margin-bottom: 6px;
+}
+
+#panel-header h1 {
+	font-size: 1.4em;
+	font-weight: 600;
+	margin: 0 0 6px;
+}
+
+#panel-header p {
+	font-size: 0.85em;
+	color: var(--header-text);
+	margin: 0;
+	line-height: 1.45;
+}
+
+/* --- Sanborn opacity: small floating control on the map --- */
+
+#opacity-control {
+	position: absolute;
+	top: 10px;
+	z-index: 5;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 4px 10px 4px 12px;
+	background: rgba(255, 255, 255, 0.9);
+	border-radius: 999px;
+	box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+	font-size: 0.72em;
+	font-weight: 500;
+	color: var(--ink-soft);
+	cursor: pointer;
+}
+
+#opacity-control input {
+	width: 80px;
+	margin: 0;
+	accent-color: var(--ink-soft);
+}
+
+/* --- Country filter --- */
+
+#country-filter {
+	flex: none;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	padding: 12px 16px;
+	border-bottom: 1px solid var(--rule);
+	max-height: 132px;
+	overflow-y: auto;
+}
+
+.filter-chip {
+	font-family: inherit;
+	font-size: 0.75em;
+	color: var(--ink);
+	background: var(--paper-warm);
+	border: 1px solid var(--rule);
+	border-radius: 999px;
+	padding: 3px 10px;
+	cursor: pointer;
+	white-space: nowrap;
+}
+
+.filter-chip:hover {
+	border-color: var(--ink-soft);
+}
+
+.filter-chip.on {
+	background: var(--accent-tint);
+	border-color: var(--accent);
+	font-weight: 600;
+}
+
+.filter-chip .flag {
+	margin-right: 4px;
+	font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+}
+
+.house-marker .n {
+	font-family: "Poppins", sans-serif;
+	font-size: 11px;
+	font-weight: 600;
+	margin-left: 3px;
+	color: var(--ink);
+}
+
+/* --- House list --- */
+
+#house-list {
+	overflow-y: auto;
+	flex: 1;
+	padding: 6px 8px 16px;
+}
+
+.street-heading {
+	font-size: 0.72em;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: var(--ink-soft);
+	padding: 14px 12px 6px;
+}
+
+.house-row {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 10px 12px;
+	margin: 0 4px 4px;
+	border-radius: 8px;
+	cursor: pointer;
+	border: 1px solid transparent;
+}
+
+.house-row:hover {
+	background: var(--paper-warm);
+}
+
+.house-row.active {
+	background: var(--accent-tint);
+	border-color: var(--accent);
+}
+
+.house-row .flags {
+	font-size: 1.3em;
+	min-width: 2.2em;
+	text-align: center;
+}
+
+.house-row .addr {
+	font-weight: 600;
+	font-size: 0.95em;
+}
+
+.house-row .sub {
+	font-size: 0.78em;
+	color: var(--ink-soft);
+	margin-top: 1px;
+}
+
+/* --- House detail --- */
+
+#house-detail {
+	display: none;
+	overflow-y: auto;
+	flex: 1;
+	padding: 6px 20px 24px;
+}
+
+#back-button {
+	background: none;
+	border: none;
+	color: var(--accent);
+	font-size: 0.9em;
+	font-weight: 500;
+	padding: 8px 0;
+	cursor: pointer;
+	font-family: inherit;
+}
+
+#back-button:hover {
+	color: var(--accent-dark);
+}
+
+.detail-flags {
+	font-size: 2em;
+	margin-top: 4px;
+}
+
+.detail-address {
+	font-size: 1.4em;
+	font-weight: 600;
+	margin: 2px 0 2px;
+}
+
+.detail-meta {
+	font-size: 0.82em;
+	color: var(--ink-soft);
+	margin-bottom: 14px;
+}
+
+.detail-tally {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	margin-bottom: 16px;
+}
+
+.tally-chip {
+	font-size: 0.78em;
+	background: var(--paper-warm);
+	border: 1px solid var(--rule);
+	border-radius: 999px;
+	padding: 3px 10px;
+}
+
+.tally-chip.top {
+	background: var(--accent-tint);
+	border-color: var(--accent);
+	font-weight: 600;
+}
+
+.detail-residents {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.resident {
+	display: flex;
+	gap: 12px;
+	padding: 10px 0;
+	border-top: 1px solid var(--rule);
+}
+
+.resident .flag {
+	font-size: 1.3em;
+	width: 1.6em;
+	text-align: center;
+	flex: none;
+}
+
+.resident .who {
+	font-weight: 600;
+	font-size: 0.95em;
+}
+
+.resident.minor .who {
+	font-weight: 500;
+	color: var(--ink-soft);
+}
+
+.resident .what {
+	font-size: 0.8em;
+	color: var(--ink-soft);
+	line-height: 1.45;
+}
+
+.tag {
+	display: inline-block;
+	font-size: 0.68em;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	border-radius: 4px;
+	padding: 1px 5px;
+	margin-left: 4px;
+	vertical-align: 1px;
+	background: #ecebe7;
+	color: var(--ink-soft);
+}
+
+.tag.unsure {
+	background: #fbf0d6;
+	color: #8a6312;
+}
+
+.fineprint {
+	font-size: 0.75em;
+	color: var(--ink-soft);
+	line-height: 1.45;
+	margin-top: 16px;
+}
+
+#panel-footer {
+	flex: none;
+	font-size: 0.7em;
+	color: var(--ink-soft);
+	padding: 10px 20px 12px;
+	border-top: 1px solid var(--rule);
+	line-height: 1.45;
+}
+
+#panel-footer a {
+	color: var(--accent);
+}
+
+#panel.showing-detail #house-list,
+#panel.showing-detail #country-filter {
+	display: none;
+}
+
+#panel.showing-detail #house-detail {
+	display: block;
+}
+
+/* --- Desktop: fixed sidebar --- */
+
+@media (min-width: 769px) {
+	#panel {
+		top: 0;
+		bottom: 0;
+		left: 0;
+		width: 400px;
+		max-width: 90vw;
+	}
+
+	#opacity-control {
+		left: calc(min(400px, 90vw) + 10px);
+	}
+}
+
+/* --- Mobile: bottom sheet --- */
+
+@media (max-width: 768px) {
+	#panel {
+		left: 0;
+		right: 0;
+		bottom: 0;
+		border-radius: 16px 16px 0 0;
+		height: 50vh;
+		transition: height 0.25s ease;
+	}
+
+	#panel.peek {
+		height: 92px;
+	}
+
+	#panel.peek #panel-header p,
+	#panel.peek #house-list,
+	#panel.peek #house-detail,
+	#panel.peek #country-filter,
+	#panel.peek #panel-footer {
+		display: none;
+	}
+
+	#panel.showing-detail {
+		height: 62vh;
+	}
+
+	#panel.showing-detail #panel-header p {
+		display: none;
+	}
+
+	#opacity-control {
+		left: 10px;
+	}
+
+	.panel-handle {
+		display: block;
+		width: 40px;
+		height: 4px;
+		background: #ccc;
+		border-radius: 2px;
+		margin: 10px auto 0;
+		flex: none;
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		top: 0;
+		z-index: 1;
+	}
+
+	#panel-header {
+		padding: 18px 16px 10px;
+		cursor: pointer;
+	}
+
+	#panel-header h1 {
+		font-size: 1.15em;
+	}
+
+	#panel-header p {
+		font-size: 0.8em;
+	}
+
+	#house-detail {
+		padding: 4px 16px 20px;
+	}
+
+	#country-filter {
+		flex-wrap: nowrap;
+		overflow-x: auto;
+		max-height: none;
+		padding: 8px 16px;
+	}
+
+	#panel-footer {
+		display: none;
+	}
+}
