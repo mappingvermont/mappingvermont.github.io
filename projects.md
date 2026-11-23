@@ -14,6 +14,7 @@ If I'm particularly interested in something, I'll try and put together a map / s
 
 ## 2026
 
+- [Bellows Falls, 1900 - census households on the 1896 Sanborn maps](/projects/bellows-falls-1900)
 - [Town by Town - mapping Vermont Public's monthly town spotlight](/projects/town-by-town)
 
 ## 2017
